@@ -24,7 +24,7 @@ We first assign a index in the pre-order sequence for each node in the initiatio
     \item For each nodes, all its child notes continuously appear after it in the pre-order sequence.
 	\item If a node's nearest voted parent is $x$, all its child nodes' nearest voted parent is $x$ or a node with index larger than $x$.
 \end{enumerate}
-Interval tree\footnote{wiki}, is fits for operations that aim to a continuous interval. We construct a interval tree that record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
+Interval tree\footnote{\url{https://en.wikipedia.org/wiki/Interval_tree}}, is fits for operations that aim to a continuous interval. We construct a interval tree that record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
 
 We have the following variables:
 \begin{itemize}
@@ -162,8 +162,8 @@ If it is not allowed to do on-chain initiation, we can realize it through merkel
 
 \begin{figure}
   \centering
-  \label{fig:2}
+  \label{fig:3}
   %\includegraphics[width=0.6\textwidth]{3.png}
   \input{it.tex}
-  \caption{Updating a path}
+  \caption{Interval tree. }
 \end{figure}
