@@ -1,0 +1,158 @@
+\section{Algorithm}
+\subsection{Overview}
+Our algorithm fully solves the liquid democracy problem. Compare to other algorithms discussed in the forum\footnote{https://forum.aragon.org/t/open-challenges-for-on-chain-liquid-democracy/161}, it has the following feature:
+\begin{itemize}
+	\item Our algorithm supports the tree with any structure, from a chain to star graph, without any restriction to max-depth.
+	\item Our algorithm supports the realtime display of voting state (all candidates' votes), with on-chain time complexity $O(\log n)$
+	\item Our algorithm requires on-chain space complexity $O(n)$ and off-chain time-complexity $O(n)$.
+\end{itemize}
+The core of the liquid democracy problem is the state transition when a voter votes. We record ``lost voting power" for any node, representing the total voting power that its child nodes have cast, initialing 0.  One of the key point is that, when a voter votes, his effective votes is his total voting power minus his lost voting power, and the voting operation \textbf{only affects the lost voting power of nodes on the path from its direct parent to its nearest parent that has already cast a vote (we call nearest voted parent).} Actually, the lost voting power of nodes on the path should increases by the amount of the voters effective votes. We use a data structure called interval tree to update.
+
+Our algorithm consists of the following three parts. 
+\begin{itemize}
+	\item Initiation: including computing the total voting power of all nodes, getting the nodes' numbers in the pre-order sequence and so on. Require time complexity $O(n)$
+	\item For each voting operation, finding the voter's nearest voted parent.
+	\item For each voting operation, maintain nodes' lost voting powers. 
+\end{itemize}
+
+Note that the initiation part only needs to be executed once, it can be realized by off-chain code, and then update to the on-chain contract through merkel root. To be straight, we first introduce the part 2 and 3 and suppose $O(n)$ initiation is allowed.
+
+\subsection{Finding Nearest Parent}
+We first assign a index in the pre-order sequence for each node in the initiation part. Note that the pre-order sequence has the following property
+\begin{enumerate}
+	\item A node always has index smaller than that of its child nodes. 
+    \item For each nodes, all its child notes continuously appear after it in the pre-order sequence.
+	\item If a node's nearest voted parent is $x$, all its child nodes' nearest voted parent is $x$ or a node with index larger than $x$.
+\end{enumerate}
+Interval tree\footnote{wiki}, is fits for operations that aim to a continuous interval. We construct a interval tree that record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree. 
+
+We have the following variables:
+\begin{itemize}
+	\item $T$: The liquid democracy tree, regard as input. 
+	\item $n$: Number of nodes
+	\item $node.index$: Index of the node in the pre-order sequence.
+	\item $b[n]$: Mapping from index to node.
+	\item $nearestparent[n]$: Nearest voted parent of the nodes, with the index in the pre-order sequence. 
+	\item $node.endpoint$: Right endpoint of node's interval in the pre-order sequence. 
+	\item $node.votingpower$: nodes total voting power (including its delegators'). 
+	\item $lazy1[2n]$: Lazy-tag in the first interval-tree\footnote{Lazy-tag is a normal operation for interval tree: when we update an interval, we can not update all the leave nodes in the interval (otherwise the time complexity is $O(n)$). Instead, we first leave the updating information to an intermediate node, that known as lazy, when next time we need to find a node included in the interval, we then sink down the lazy-tag. }
+	\item $node.candidate$: recording the candidate that the voter votes.
+	\item $v[]$: recording the votes of candidates.
+\end{itemize}
+In this subsection we realize the function that finding the a node's nearest parent.
+
+\begin{algorithm}
+	\label{alg:preorder}
+	\textbf{Procedure} $Preorder(Node~root)$;
+	\hrule
+	$n \leftarrow n+1$\;
+	$m \leftarrow m+1$
+	$root.leftbracket \leftarrow m${\color{gray}//For bracket sequence}\; 
+	%$n_0 \leftarrow n$\;
+	%$S[n] \leftarrow root$\;
+	$root.index \leftarrow n$\;
+	$b[n]=root$\;
+	\For{$node$ in $root$'s direct child}
+	{
+		$Preorder(node)$
+	}
+	$root.endpoint \leftarrow n$\;
+	$m \leftarrow m+1$\;
+	$root.rightbracket \leftarrow m${\color{gray}//For bracket sequence}\; 
+\end{algorithm}
+The preorder function is to get each node's index and corresponding interval for child nodes, in the preorder sequence. 
+\begin{algorithm}
+	\textbf{procedure} $update1(int~L,int ~R, int~l, int~r, int~k, int~v)${\color{gray}
+		\\//$L,R$ are the interval for updating, and $l,r$ are node's interval,$k$ is the index of the node on interval tree, $v$ is the value for updating the interval.}
+	\hrule
+	\eIf {$L=l$ and $R=r$}
+	{
+		\If {$v>lazy1[k]$} {$lazy1[k] \leftarrow v$}
+		\If {$L = R$} {$nearestparent[L] = lazy1[k]$}
+		{\color{gray}
+		//Recursion ends when updating interval equals to the node's interval, and then updating the value of the interval}
+	}
+	{
+		$int~m \leftarrow (l+r)/2$\;
+		\If {$lazy1[2k]<lazy[k]$} {$lazy1[2k] \leftarrow lazy1[k]$}
+		\If {$lazy1[2k+1]<lazy[k]$} {$lazy1[2k+1] \leftarrow lazy1[k]${\color{gray}
+			//sink down the lazy-tag}}
+		\If {$L \leq m$}{$update(L,\min\{m,R\},l,m,2k,v)$}
+		\If {$R>m$}{$update(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
+	}
+\end{algorithm}
+Then we use $update1$ to finding and update the interval tree. No extra code is needed for building the interval tree as we use $k,2k,2k+1$ to represent a node and its two children for a node in the interval tree.
+
+The inherent property of interval tree guarantees that, there are at most two intervals in each depth that are recursively processed, so the time complexity for each updating is $O(\log n)$.
+
+\subsection{Updating Lost Voting Power}
+When a voter votes, all nodes on the path from the voter to its nearest voted parented should update their lost voting powers. See Figure \ref{fig:2}, if voter 8 votes after voter 1 votes, then path $7,3,2,1$ should be updated. However it is not a continuous interval in the pre-order sequence. 
+\begin{figure}
+	\label{fig:2}
+	\includegraphics[width=0.6\textwidth]{3.png}
+	\caption{Updating a path}
+\end{figure}
+We use the bracket sequence to handle this problem. the bracket sequence is to record each node twice in the pre-order execution, one for enter and one for exit, called left bracket and right bracket respectively. For Figure \ref{fig:2}, the bracket sequence is
+$$1,2,3,4,5,6,6,5,4,7,8,8,7,3,2,9,10,10,11,11,9,1$$
+Let array $s[2n]$ record a value of the bracket sequence. When vote 8 votes, we let $s[1-10]+=8$, that is, the interval form node 1's left bracket to the node before node 8's left bracket.
+
+The lost voting power of a node $u$ is $s[u.leftbracket]-s[u.rightbracket]$. 
+
+To see why, it is not hard to find that, if a node does not occur on the path we need update, it occurs twice in the interval (1-10) of the bracket sequence, say node 4,5,6. If a node is to be update, it occurs only once in the interval  (1-10) of the bracket sequence, say node 1,2,3. So from maintaining the array $s$ we can maintain each node's lost voting power. Since now the operation is an interval again, we can use another interval tree to handle it.
+
+We add the following variables:
+\begin{itemize}
+%\item $s[2n]$, recording the value of the bracket sequence.
+\item $lazy2[4n]$, the lazy-tag of the second interval tree.
+\item $node.leftbracket,node.rightbracket$
+\end{itemize}
+
+\begin{algorithm}
+	\textbf{procedure} $update2(int~L,int ~R, int~l, int~r, int~k, int~v)${\color{gray}
+		\\//$L,R$ are the interval for updating, and $l,r$ are node's interval,$k$ is the index of the node on interval tree, $v$ is the value for updating the interval.}
+	\hrule
+	\eIf {$L=l$ and $R=r$}
+	{
+       $lazy2[k]+=v$
+	   %\If {$L = R$} {}
+	}
+	{
+		$int~m \leftarrow (l+r)/2$\;
+		$lazy2[2k] += lazy2[k]$\;
+		$lazy2[2k+1]+= lazy2[k]$\;
+		$lazy2[k] \leftarrow 0$
+			{\color{gray}
+		//sink down the lazy-tag}\;
+		\If {$L \leq m$}{$update(L,\min\{m,R\},l,m,2k,v)$}
+		\If {$R>m$}{$update(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
+    }
+\end{algorithm}
+We then introduce the main algorithm.
+\begin{algorithm}
+	\caption{Main}%算法名字
+	\KwIn{$tree$}
+	\hrule
+	$Preorder(tree.root)$\;
+	\While {true}
+	{
+		Get voter $node$ and candidate $node.candidate$\;
+		$update2(node.leftbracket,node.leftbracket,1,2n,1,0)${\color{gray}
+			//Find the value of node's leftbracket}\;
+		$update2(node.rightbracket,node.rightbracket,1,2n,1,0)${\color{gray}
+			//Find the value of node's rightbracket}\;
+		$int~t=node.votingpower-lazy2[node.leftbracket]+lazy2[node.rightbracket]$\;
+		$C[node.candidate]+=t$
+		$update1(node.index,node.index,1,n,1,0)${\color{gray}
+			\\//Find the the node's nearest parent}\;
+		$Node~parent = b[nearestparent[node.nunmber]]$\;
+		$C[parent.candndate]-=t$\;
+		$update1(node.index+1,node.endpoint,1,n,1,node.index)${\color{gray}
+			\\//Update the first interval tree}\;
+		$update2(parent.leftbracket,node.leftbracket-1,1,2n,1,t)${\color{gray}
+			\\//Update the second interval tree}\;
+		Output $C[]$
+	}
+\end{algorithm}
+
+\subsection{Initiation}
+If it is not allowed to do on-chain initiation, we can realize it through merkel root. That is, each voter do the initiation off-chain, including construct the graph, compute the total voting power, their index, left/right bracket and so on. When they first cast a vote, they should also attached with all these initial  information and a merkel proof, where the leave nodes of the merkel are $n$ voters initial information and the root are stored on-chain. The contract determines whether the initial information is correct and then store them on-chain if correct.
