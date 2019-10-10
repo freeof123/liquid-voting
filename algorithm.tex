@@ -24,7 +24,15 @@ We first assign a index in the pre-order sequence for each node in the initiatio
     \item For each nodes, all its child notes continuously appear after it in the pre-order sequence.
 	\item If a node's nearest voted parent is $x$, all its child nodes' nearest voted parent is $x$ or a node with index larger than $x$.
 \end{enumerate}
-Interval tree\footnote{wiki}, is fits for operations that aim to a continuous interval. We construct a interval tree that record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
+Interval tree\footnote{wiki}, is fits for operations that aim to a continuous interval. We construct an interval tree \ref{fig:3} with respect to the pre-order sequence and record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
+
+\begin{figure}
+	\centering
+	\label{fig:3}
+	%\includegraphics[width=0.6\textwidth]{3.png}
+	\input{it.tex}
+	\caption{Interval tree, where the blue number in each node is the index of the node on the interval tree and the interval in each node represents the interval of the preorder sequence}
+\end{figure}
 
 We have the following variables:
 \begin{itemize}
@@ -160,10 +168,4 @@ We then introduce the main algorithm.
 If it is not allowed to do on-chain initiation, we can realize it through merkel root. That is, each voter do the initiation off-chain, including construct the graph, compute the total voting power, their index, left/right bracket and so on. When they first cast a vote, they should also attached with all these initial  information and a merkel proof, where the leave nodes of the merkel are $n$ voters initial information and the root are stored on-chain. The contract determines whether the initial information is correct and then store them on-chain if correct.
 
 
-\begin{figure}
-  \centering
-  \label{fig:2}
-  %\includegraphics[width=0.6\textwidth]{3.png}
-  \input{it.tex}
-  \caption{Updating a path}
-\end{figure}
+
