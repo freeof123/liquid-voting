@@ -15,32 +15,32 @@ Our algorithm consists of the following three parts.
 	\item For each voting operation, maintain nodes' lost voting powers.
 \end{itemize}
 
-Note that the initiation part only needs to be executed once, it can be realized by off-chain code, and then update to the on-chain contract through merkel root. To be straight, we first introduce the part 2 and 3 and suppose $O(n)$ initiation is allowed.
+We have the following variables:
+\begin{itemize}
+	\item $T$: The liquid democracy tree, regard as input.
+	\item $n$: Number of nodes
+	\item $node.index$: Index of the node in the pre-order sequence.
+	\item $node.address$: The address of each node.
+	\item $b[n]$: Mapping from index to node.
+	\item $nearestparent[n]$: Nearest voted parent of the nodes, with the index in the pre-order sequence.
+	\item $node.endpoint$: Right endpoint of node's interval in the pre-order sequence.
+	\item $node.votingpower$: Nodes total voting power (including its delegators').
+	\item $node.candidate$: Recording the candidate that the voter votes.
+	\item $v[]$: Recording the votes of candidates.
+\end{itemize}
+%Note that the initiation part only needs to be executed once, it can be realized by off-chain code, and then update to the on-chain contract through merkel root. To be straight, we first introduce the part 2 and 3 and suppose $O(n)$ initiation is allowed.
 
-\subsection{Finding Nearest Parent}
+\subsection{Initiation}
+It is not allowed to do on-chain initiation due to the $O(n)$ complexity, we
+can realize it through merkel root. The initiation process is done by the vote
+creator.
+
 We first assign a index in the pre-order sequence for each node in the initiation part. Note that the pre-order sequence has the following property
 \begin{enumerate}
 	\item A node always has index smaller than that of its child nodes.
     \item For each nodes, all its child notes continuously appear after it in the pre-order sequence.
 	\item If a node's nearest voted parent is $x$, all its child nodes' nearest voted parent is $x$ or a node with index larger than $x$.
 \end{enumerate}
-Interval tree\footnote{\url{https://en.wikipedia.org/wiki/Interval_tree}}, is fits for operations that aim to a continuous interval. We construct a interval tree that record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
-
-We have the following variables:
-\begin{itemize}
-	\item $T$: The liquid democracy tree, regard as input.
-	\item $n$: Number of nodes
-	\item $node.index$: Index of the node in the pre-order sequence.
-	\item $b[n]$: Mapping from index to node.
-	\item $nearestparent[n]$: Nearest voted parent of the nodes, with the index in the pre-order sequence.
-	\item $node.endpoint$: Right endpoint of node's interval in the pre-order sequence.
-	\item $node.votingpower$: nodes total voting power (including its delegators').
-	\item $lazy1[2n]$: Lazy-tag in the first interval-tree\footnote{Lazy-tag is a normal operation for interval tree: when we update an interval, we can not update all the leave nodes in the interval (otherwise the time complexity is $O(n)$). Instead, we first leave the updating information to an intermediate node, that known as lazy, when next time we need to find a node included in the interval, we then sink down the lazy-tag. }
-	\item $node.candidate$: recording the candidate that the voter votes.
-	\item $v[]$: recording the votes of candidates.
-\end{itemize}
-In this subsection we realize the function that finding the a node's nearest parent.
-
 \begin{algorithm}
 	\label{alg:preorder}
 	\textbf{Procedure} $Preorder(Node~root)$;
@@ -61,6 +61,77 @@ In this subsection we realize the function that finding the a node's nearest par
 	$root.rightbracket \leftarrow m${\color{gray}//For bracket sequence}\;
 \end{algorithm}
 The preorder function is to get each node's index and corresponding interval for child nodes, in the preorder sequence.
+
+The next step is to create a Merkel tree, and each leaf node is computed like
+this:
+\[
+  hash(node.address, node.endpoint, node.index).
+\]
+\noindent The vote creator need to pass the Merkel root as parameter when
+creating the vote. And the Merkel root is stored on-chain.
+
+
+\subsection{Vote}
+For each voter, they need to get their information, like $endpoint$ and $index$. They can achieve
+this by either contact the vote creator (through a web page) or do the
+initiation process themselves. Each
+voter needs to provide their information and also a Merkel proof when casting their vote. And
+the contract determines whether the provided information is correct since the
+Merkel root is already on-chain.
+
+We then introduce the main algorithm, Algorithm~\ref{alg:vote}. Note this
+algorithm is on-chain. To run this algorithm, the contract need to initiate several arrays (
+\texttt{mapping} in Solidity). Although the arrays' sizes are $O(n)$, they can
+be initiate with 0, which is the default value on Solidity.
+
+\begin{algorithm}
+	\caption{Vote}%算法名字
+  \KwIn{$node$: voter}
+  \KwIn{$proof$: voter's Merkel proof}
+	\hrule
+    $h \leftarrow hash(node.address, node.index, node.endpoint);$
+
+    \If {not check(RootHash, proof, h)}{
+      \Return ;
+    }
+		$update2(node.leftbracket,node.leftbracket,1,2n,1,0)${\color{gray}
+			//Find the value of node's leftbracket}\;
+		$update2(node.rightbracket,node.rightbracket,1,2n,1,0)${\color{gray}
+			//Find the value of node's rightbracket}\;
+		$int~t=node.votingpower-lazy2[node.leftbracket]+lazy2[node.rightbracket]$\;
+		$C[node.candidate]+=t$\;
+		$update1(node.index,node.index,1,n,1,0)${\color{gray}
+			\\//Find the the node's nearest parent}\;
+		$Node~parent = b[nearestparent[node.nunmber]]$\;
+		$C[parent.candndate]-=t$\;
+		$update1(node.index+1,node.endpoint,1,n,1,node.index)${\color{gray}
+			\\//Update the first interval tree}\;
+		$update2(parent.leftbracket,node.leftbracket-1,1,2n,1,t)${\color{gray}
+			\\//Update the second interval tree}\;
+		Output $C[]$
+  \label{alg:vote}
+\end{algorithm}
+Also note that $RootHash$ is already stored on-chain.
+
+\subsection{Finding Nearest Parent}
+In this subsection we realize the function that finding the a node's nearest parent.
+
+\begin{figure}
+	\centering
+	%\includegraphics[width=0.6\textwidth]{3.png}
+	\input{it.tex}
+	\caption{Interval tree, where the blue number in each node is the index of the node on the interval tree and the interval in each node represents the interval of the preorder sequence}
+	\label{fig:3}
+\end{figure}
+Interval tree\footnote{\url{https://en.wikipedia.org/wiki/Interval_tree}}, is
+fits for operations that aim to a continuous interval. We construct an interval
+tree (Figure~\ref{fig:3}) with respect to the pre-order sequence and record each node's nearest voted parent. Each time a voter votes, we update the interval that represent the voter's child nodes in the interval tree.
+
+We add a new global variable here.
+\begin{itemize}
+	\item $lazy1[2n]$: Lazy-tag in the first interval-tree\footnote{Lazy-tag is a normal operation for interval tree: when we update an interval, we can not update all the leave nodes in the interval (otherwise the time complexity is $O(n)$). Instead, we first leave the updating information to an intermediate node, that known as lazy, when next time we need to find a node included in the interval, we then sink down the lazy-tag. }
+\end{itemize}
+
 \begin{algorithm}
 	\textbf{procedure} $update1(int~L,int ~R, int~l, int~r, int~k, int~v)${\color{gray}
 		\\//$L,R$ are the interval for updating, and $l,r$ are node's interval,$k$ is the index of the node on interval tree, $v$ is the value for updating the interval.}
@@ -81,7 +152,7 @@ The preorder function is to get each node's index and corresponding interval for
 		\If {$R>m$}{$update(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
 	}
 \end{algorithm}
-Then we use $update1$ to finding and update the interval tree. No extra code is needed for building the interval tree as we use $k,2k,2k+1$ to represent a node and its two children for a node in the interval tree.
+We use $update1$ to finding and update the interval tree. No extra code is needed for building the interval tree as we use $k,2k,2k+1$ to represent a node and its two children for a node in the interval tree.
 
 The inherent property of interval tree guarantees that, there are at most two intervals in each depth that are recursively processed, so the time complexity for each updating is $O(\log n)$.
 
@@ -89,12 +160,14 @@ The inherent property of interval tree guarantees that, there are at most two in
 When a voter votes, all nodes on the path from the voter to its nearest voted parented should update their lost voting powers. See Figure \ref{fig:2}, if voter 8 votes after voter 1 votes, then path $7,3,2,1$ should be updated. However it is not a continuous interval in the pre-order sequence.
 \begin{figure}
   \centering
-	\label{fig:2}
 	%\includegraphics[width=0.6\textwidth]{3.png}
   \input{3.tex}
 	\caption{Updating a path}
+	\label{fig:2}
 \end{figure}
-We use the bracket sequence to handle this problem. the bracket sequence is to record each node twice in the pre-order execution, one for enter and one for exit, called left bracket and right bracket respectively. For Figure \ref{fig:2}, the bracket sequence is
+We use the bracket sequence to handle this problem. A bracket sequence is to
+record each node twice in the pre-order execution, one for enter and one for
+exit, called left bracket and right bracket respectively. For Figure~\ref{fig:2}, the bracket sequence is
 $$1,2,3,4,5,6,6,5,4,7,8,8,7,3,2,9,10,10,11,11,12,12,9,1$$
 Let array $s[2n]$ record a value of the bracket sequence. When vote 8 votes, we let $s[1-10]+=8$, that is, the interval form node 1's left bracket to the node before node 8's left bracket.
 
@@ -125,45 +198,7 @@ We add the following variables:
 		$lazy2[k] \leftarrow 0$
 			{\color{gray}
 		//sink down the lazy-tag}\;
-		\If {$L \leq m$}{$update(L,\min\{m,R\},l,m,2k,v)$}
-		\If {$R>m$}{$update(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
+		\If {$L \leq m$}{$update2(L,\min\{m,R\},l,m,2k,v)$}
+		\If {$R>m$}{$update2(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
     }
 \end{algorithm}
-We then introduce the main algorithm.
-\begin{algorithm}
-	\caption{Main}%算法名字
-	\KwIn{$tree$}
-	\hrule
-	$Preorder(tree.root)$\;
-	\While {true}
-	{
-		Get voter $node$ and candidate $node.candidate$\;
-		$update2(node.leftbracket,node.leftbracket,1,2n,1,0)${\color{gray}
-			//Find the value of node's leftbracket}\;
-		$update2(node.rightbracket,node.rightbracket,1,2n,1,0)${\color{gray}
-			//Find the value of node's rightbracket}\;
-		$int~t=node.votingpower-lazy2[node.leftbracket]+lazy2[node.rightbracket]$\;
-		$C[node.candidate]+=t$
-		$update1(node.index,node.index,1,n,1,0)${\color{gray}
-			\\//Find the the node's nearest parent}\;
-		$Node~parent = b[nearestparent[node.nunmber]]$\;
-		$C[parent.candndate]-=t$\;
-		$update1(node.index+1,node.endpoint,1,n,1,node.index)${\color{gray}
-			\\//Update the first interval tree}\;
-		$update2(parent.leftbracket,node.leftbracket-1,1,2n,1,t)${\color{gray}
-			\\//Update the second interval tree}\;
-		Output $C[]$
-	}
-\end{algorithm}
-
-\subsection{Initiation}
-If it is not allowed to do on-chain initiation, we can realize it through merkel root. That is, each voter do the initiation off-chain, including construct the graph, compute the total voting power, their index, left/right bracket and so on. When they first cast a vote, they should also attached with all these initial  information and a merkel proof, where the leave nodes of the merkel are $n$ voters initial information and the root are stored on-chain. The contract determines whether the initial information is correct and then store them on-chain if correct.
-
-
-\begin{figure}
-  \centering
-  \label{fig:3}
-  %\includegraphics[width=0.6\textwidth]{3.png}
-  \input{it.tex}
-  \caption{Interval tree. }
-\end{figure}
