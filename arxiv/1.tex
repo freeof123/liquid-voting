@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+%\tikzset{grow'=right,level distance=32pt}
+%\tikzset{execute at begin node=\strut}
+%\tikzset{every tree node/.style={anchor=base west}}
+\Tree
+[.\node[fsn](n1){1};
+  [.\node[sn]{2};
+   [.\node[sn]{3};
+    [.\node[sn]{4};
+     [.\node[fsn](n5){5};
+      [.\node[sn]{6};]]]
+    [.\node[sn]{7};
+     [.\node[sn](n8){8};]]] ]
+  [.\node[sn]{9};
+   [.\node[sn]{10};]
+   [.\node[sn]{11};]
+   [.\node[sn]{12};]]
+]
+\node (a) at ($(n1.east) + (1, 0)$) {A};
+\node (b) at ($(n5.west) + (-1, 0)$) {B};
+\draw [->, >=stealth', color=blue] (n1) -- (a);
+\draw [->, >=stealth', color=blue] (n5) -- (b);
+
+\end{tikzpicture}
