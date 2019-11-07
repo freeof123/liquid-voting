@@ -46,12 +46,11 @@ We first assign a index in the pre-order sequence for each node in the initiatio
 	\textbf{Procedure} $Preorder(Node~root)$;
 	\hrule
 	$n \leftarrow n+1$\;
-	$m \leftarrow m+1$
+	$m \leftarrow m+1$\;
 	$root.leftbracket \leftarrow m${\color{gray}//For bracket sequence}\;
 	%$n_0 \leftarrow n$\;
 	%$S[n] \leftarrow root$\;
 	$root.index \leftarrow n$\;
-	$b[n]=root$\;
 	\For{$node$ in $root$'s direct child}
 	{
 		$Preorder(node)$
@@ -85,15 +84,16 @@ algorithm is on-chain. To run this algorithm, the contract need to initiate seve
 be initiate with 0, which is the default value on Solidity.
 
 \begin{algorithm}
-	\caption{Vote}%算法名字
+	\caption{Vote: upon receiving a voting message}%算法名字
   \KwIn{$node$: voter}
-  \KwIn{$proof$: voter's Merkel proof}
+  \KwIn{$data,proof,node.candidate$}
 	\hrule
-    $h \leftarrow hash(node.address, node.index, node.endpoint);$
-
-    \If {not check(RootHash, proof, h)}{
+%    $h \leftarrow hash(node.address, node.index, node.endpoint)$\;
+ 
+    \If {not check(RootHash, proof, data)}{
       \Return ;
     }
+    	$b[node.index]=node$\;
 		$update2(node.leftbracket,node.leftbracket,1,2n,1,0)${\color{gray}
 			//Find the value of node's leftbracket}\;
 		$update2(node.rightbracket,node.rightbracket,1,2n,1,0)${\color{gray}
