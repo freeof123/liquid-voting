@@ -1,11 +1,14 @@
 \documentclass[12pt]{article}
 \usepackage{indentfirst}
+\usepackage{arabtex}
 \usepackage{amssymb}
-\usepackage{amsmath}
+\usepackage{amsmath,amsthm}
 \usepackage{color, xcolor}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{graphicx}
+\usepackage{natbib}
 \usepackage{url}
+
 
 \usepackage{tikz-qtree}
 \usetikzlibrary{calc}
@@ -19,6 +22,18 @@ minimum size=1.6cm]
 
 \tikzstyle{fsn}=[circle, draw, fill=blue!30, inner sep=0pt, minimum size=0.6cm]
 
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{claim}{Claim}
+\newtheorem{lemma}{Lemma}
+\newtheorem{note}{Note}
+\newtheorem{open}{Open}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{observation}{Observation}
+
 \begin{document}
 	\pagestyle{empty}
 
@@ -26,26 +41,24 @@ minimum size=1.6cm]
 		\vspace*{1.5cm}
 		%\includegraphics[scale=0.5]{../common/Nebulas.png}
 		\vspace{0.5cm}
-		\textbf{\huge{Liquid Democracy}}
+		\textbf{\huge{A Fast Algorithm for Liquid Democracy Problem}}
 
 		\vspace{0.5cm}
-    ASResearch\footnote{\url{https://asresearch.io/}}
+    Peng Li, ASResearch\footnote{\url{https://asresearch.io/}}
 		\textbf{}
 	\end{center}
+\begin{abstract}
+	We study the liquid democracy problem, where each voter can either directly vote to a candidate or delegate his voting power to a proxy. We consider the implementation of liquid democracy on the blockchain through Ethereum smart contract. However, due to the gas fee limitation of Ethereum mainnet, a challenge comes that the number of instruction for processing a voting massage can not exceed a certain amount, which restrict the application scenario with respect to algorithms whose time complexity is linear to the number of voters. We propose a fast algorithm to overcome the challenge, such that i) shifts the on-chain initialization to off-chain and ii) the on-chain complexity for processing each voting massage is $O(\log n)$, where $n$ is the number of voters. Experimental results show that our algorithm supports $n=1000000$ in the worst case for liquid democracy on Ethereum mainnet. 
+\end{abstract}
 \input{intro.tex}
 \input{related.tex}
-%\input{algorithm.tex}
 \input{preliminary.tex}
+\input{algorithm.tex}
+\input{theorem.tex}
+\input{experiment.tex}
+\section*{Acknowledgment}
+We thank YingLiu from Peking University for the advising the algorithm.
 
-
-
-%\begin{algorithm}
-%	\textbf{Procedure} $Build(int~k,int~l,int ~r)$;
-
-%\end{algorithm}
-
-
-
-
-
+\bibliographystyle{plain}
+\bibliography{ref}
 \end{document}

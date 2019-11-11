@@ -1,0 +1,130 @@
+\begin{thebibliography}{10}
+
+\bibitem{bannet2004hack}
+Jonathan Bannet, David~W Price, Algis Rudys, Justin Singer, and Dan~S Wallach.
+\newblock Hack-a-vote: Security issues with electronic voting systems.
+\newblock {\em IEEE Security \& Privacy}, 2(1):32--37, 2004.
+
+\bibitem{behrens2014principles}
+Jan Behrens, Axel Kistner, Andreas Nitsche, and Bj{\"o}rn Swierczek.
+\newblock {\em The principles of LiquidFeedback}.
+\newblock Interaktive Demokratie e. V. Berlin, 2014.
+
+\bibitem{birch2016full}
+Sarah Birch.
+\newblock Full participation: A comparative study of compulsory voting.
+\newblock 2016.
+
+\bibitem{blum2016liquid}
+Christian Blum and Christina~Isabel Zuber.
+\newblock Liquid democracy: Potentials, problems, and perspectives.
+\newblock {\em Journal of Political Philosophy}, 24(2):162--182, 2016.
+
+\bibitem{bocek2018smart}
+Thomas Bocek and Burkhard Stiller.
+\newblock Smart contracts--blockchains in the wings.
+\newblock In {\em Digital Marketplaces Unleashed}, pages 169--184. Springer,
+  2018.
+
+\bibitem{brill2018pairwise}
+Markus Brill and Nimrod Talmon.
+\newblock Pairwise liquid democracy.
+\newblock In {\em IJCAI}, pages 137--143, 2018.
+
+\bibitem{carroll1884principles}
+Lewis Carroll.
+\newblock {\em The principles of parliamentary representation}.
+\newblock Harrison and Sons, 1884.
+
+\bibitem{christoff2017binary}
+Zo{\'e} Christoff and Davide Grossi.
+\newblock Binary voting with delegable proxy: An analysis of liquid democracy.
+\newblock {\em arXiv preprint arXiv:1707.08741}, 2017.
+
+\bibitem{gerber1998primary}
+Elisabeth~R Gerber and Rebecca~B Morton.
+\newblock Primary election systems and representation.
+\newblock {\em Journal of Law, Economics, \& Organization}, pages 304--324,
+  1998.
+
+\bibitem{hanifatunnisa2017blockchain}
+Rifa Hanifatunnisa and Budi Rahardjo.
+\newblock Blockchain based e-voting recording system design.
+\newblock In {\em 2017 11th International Conference on Telecommunication
+  Systems Services and Applications (TSSA)}, pages 1--6. IEEE, 2017.
+
+\bibitem{hardt2015google}
+Steve Hardt and Lia~CR Lopes.
+\newblock Google votes: a liquid democracy experiment on a corporate social
+  network.
+\newblock 2015.
+
+\bibitem{harris2004black}
+Bev Harris and David Allen.
+\newblock {\em Black box voting: Ballot tampering in the 21st century}.
+\newblock Talion Pub., 2004.
+
+\bibitem{hjalmarsson2018blockchain}
+Friorik~P Hjalmarsson, Gunnlaugur~K Hreiarsson, Mohammad Hamdaqa, and Gisli
+  Hjalmtysson.
+\newblock Blockchain-based e-voting system.
+\newblock In {\em 2018 IEEE 11th International Conference on Cloud Computing
+  (CLOUD)}, pages 983--986. IEEE, 2018.
+
+\bibitem{kahng2018liquid}
+Anson Kahng, Simon Mackenzie, and Ariel~D Procaccia.
+\newblock Liquid democracy: An algorithmic perspective.
+\newblock In {\em Thirty-Second AAAI Conference on Artificial Intelligence},
+  2018.
+
+\bibitem{kohno2004analysis}
+Tadayoshi Kohno, Adam Stubblefield, Aviel~D Rubin, and Dan~S Wallach.
+\newblock Analysis of an electronic voting system.
+\newblock In {\em IEEE Symposium on Security and Privacy, 2004. Proceedings.
+  2004}, pages 27--40. IEEE, 2004.
+
+\bibitem{kousser2007does}
+Thad Kousser and Megan Mullin.
+\newblock Does voting by mail increase participation? using matching to analyze
+  a natural experiment.
+\newblock {\em Political Analysis}, 15(4):428--445, 2007.
+
+\bibitem{miller1969program}
+James~C Miller.
+\newblock A program for direct and proxy voting in the legislative process.
+\newblock {\em Public choice}, 7(1):107--113, 1969.
+
+\bibitem{mulmuley1994computational}
+Ketan Mulmuley.
+\newblock Computational geometry.
+\newblock {\em An Introduction Through Randomized Algorithms. Prentice-Hall},
+  1994.
+
+\bibitem{nakamoto2008bitcoin}
+Satoshi Nakamoto et~al.
+\newblock Bitcoin: A peer-to-peer electronic cash system.
+\newblock 2008.
+
+\bibitem{paulin2014through}
+Alois Paulin.
+\newblock Through liquid democracy to sustainable non-bureaucratic government.
+\newblock In {\em Proc. Int. Conf. for E-Democracy and Open Government}, pages
+  205--217, 2014.
+
+\bibitem{schulze2011new}
+Markus Schulze.
+\newblock A new monotonic, clone-independent, reversal symmetric, and
+  condorcet-consistent single-winner election method.
+\newblock {\em Social Choice and Welfare}, 36(2):267--303, 2011.
+
+\bibitem{william1912primary}
+William~S. U'Ren.
+\newblock Government by proxy now.
+\newblock {\em New York Times}, 1912.
+
+\bibitem{wood2014ethereum}
+Gavin Wood et~al.
+\newblock Ethereum: A secure decentralised generalised transaction ledger.
+\newblock {\em Ethereum project yellow paper}, 151(2014):1--32, 2014.
+
+\end{thebibliography}

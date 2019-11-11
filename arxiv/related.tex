@@ -1,13 +1,5 @@
-\section{Related Work}
-1. block chain and e-voting. 
+\subsection{Related Work}
+The {\em Liquid Democracy Journal} \footnote{https://liquid-democracy-journal.org/} collects many valuable literature about the liquid democracy problem, which begins at 2014 and almost information about latest progress can be found there. Blum and Zuber\cite{blum2016liquid} give an overview liquid democracy, include the concepts, the history and problems. Recently, a few technical papers also are interested in liquid democracy. Anson et al. \cite{kahng2018liquid} analyze the problem that whether there exists a delegate voting that outperforms direct voting, for the situation where there are a correct candidata and incorrest candidate. Brill and Talmon \cite{brill2018pairwise} study the case where a voter can delegate to several proxies and specify a partial order. They propose a way to overcome the complications of individual rational. Christoff and Grossi \cite{christoff2017binary} analyze liquid democracy within the theory of binary aggregation, and consider the issues of individual rational and delegate cycle. 
 
-2. about liquid demo: [liquid democracy journal]: total overview
-
-[Liquid Democracy: Potentials, Problems, and Perspectives]
-
-Arxiv:[Binary Voting with Delegable Proxy: An Analysis of Liquid Democracy ]
-
-To the best of our knowledge our paper is the first ...
-
-[Google vote and liquid feedback]
---3.about shifting from on-chain to off-chain 
+To the best of our knowledge, our paper is the first $O(\log n)$ algorithm solving the on-chain liquid democracy problem, while the algorithms in Google vote and liquid feedback work in following ways: Google vote's algorithm mainly bases on the work of Schulze's \cite{schulze2011new}, which is a $m^3$ method for electing a winner, where $m$ is the number of candidates. They also demonstrate that the system can implement liquid democracy on a social network in a scalable manner with a gradual learning curve. 
+Liquid feedback's algorithm [...]   
