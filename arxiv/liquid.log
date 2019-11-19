@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.2)  11 NOV 2019 22:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.2)  19 NOV 2019 20:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -772,12 +772,12 @@ ABD: EveryShipout initializing macros
 (/usr/local/texlive/2018/texmf-dist/tex/latex/arabtex/alocal.sty
 (ArabTeX) 3.11 local stub, 26.02.2006)
 (ArabTeX) version 3.11s (02.07.2006): second phase of patching)
-LaTeX Font Info:    Try loading font information for U+msa on input line 47.
+LaTeX Font Info:    Try loading font information for U+msa on input line 45.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 47.
+LaTeX Font Info:    Try loading font information for U+msb on input line 45.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -786,32 +786,32 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 10--10
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
 [][]\OT1/cmr/m/n/10 According to https://github.com/ethereum/EIPs/blob/master/E
 IPS/eip-150.md,
  []
 
 [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 20.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 23.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 20.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 23.
 
-Overfull \hbox (12.30276pt too wide) in paragraph at lines 22--23
+Overfull \hbox (12.30276pt too wide) in paragraph at lines 25--26
 \OT1/cmr/m/n/12 com-plex-ity for up-dat-ing/displaying the vot-ing sta-tus and 
 stor-age, through
  []
 
-) (./related.tex) (./preliminary.tex
-Overfull \hbox (3.44037pt too wide) in paragraph at lines 4--1
+) (./related.tex [4]) (./preliminary.tex
+Overfull \hbox (3.44037pt too wide) in paragraph at lines 6--1
 \OT1/cmr/m/n/12 solv-ing the on-chain liq-uid democ-racy prob-lem, while the al
 -go-rithms in Google
  []
 
-[4] [5] (./1.tex) [6]
-<merkel.png, id=35, 991.705pt x 508.90125pt>
+[5] [6] (./1.tex) [7]
+<merkel.png, id=40, 991.705pt x 508.90125pt>
 File: merkel.png Graphic file (type png)
 <use merkel.png>
 Package pdftex.def Info: merkel.png  used on input line 60.
@@ -821,36 +821,30 @@ Overfull \hbox (39.00238pt too wide) in paragraph at lines 60--62
  [][] 
  []
 
-[7] [8 <./merkel.png>] (./it.tex) [9]) (./algorithm.tex [10] [11] [12] [13]
-[14]
-Overfull \hbox (2.29764pt too wide) in paragraph at lines 107--108
+[8] (./it.tex) [9 <./merkel.png>] [10]) (./algorithm.tex [11] [12] [13]
+[14] [15]
+Overfull \hbox (2.29764pt too wide) in paragraph at lines 108--109
 \OT1/cmr/m/it/12 node.endpoint, node.leftbracket, node.rightbracket) \OT1/cmr/m
 /n/12 (here the node cor-re-sponds
  []
 
-[15] [16]
+[16] [17]
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 156.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 158.
 
-Overfull \hbox (0.4984pt too wide) in paragraph at lines 184--185
+Overfull \hbox (0.4984pt too wide) in paragraph at lines 186--187
 []\OT1/cmr/m/it/12 update1(node.index+1, node.endpoint,1,n,1,node.index) \OT1/c
 mr/m/n/12 uses the voter's
  []
 
 
-Overfull \hbox (8.8192pt too wide) in paragraph at lines 185--186
+Overfull \hbox (8.8192pt too wide) in paragraph at lines 187--188
 []\OT1/cmr/m/it/12 update1(node.index,node.index,1,n,1,0) \OT1/cmr/m/n/12 finds
  and records the node's near-
  []
 
-[17] [18] (./3.tex) [19]
-Overfull \hbox (10.52164pt too wide) in paragraph at lines 234--235
-[]\OT1/cmr/m/it/12 update2(parent.leftbracket, node.leftbracket,1,2n,1,t) \OT1/
-cmr/m/n/12 up-date the ``S" value
- []
-
-[20]) (./theorem.tex [21]) (./experiment.tex [22]) (./liquid.bbl [23] [24])
-[25] (./liquid.aux)
+(./3.tex) [18] [19] [20]) (./theorem.tex [21] [22]) (./experiment.tex) [23]
+(./liquid.bbl [24] [25]) [26] (./liquid.aux)
 
  *File List*
  article.cls    2014/09/29 v1.4h Standard LaTeX document class
@@ -964,13 +958,13 @@ experiment.tex
 
  ) 
 Here is how much of TeX's memory you used:
- 19595 strings out of 492649
- 380177 string characters out of 6129623
- 484918 words of memory out of 5000000
- 23011 multiletter control sequences out of 15000+600000
- 14180 words of font info for 55 fonts, out of 8000000 for 9000
+ 19612 strings out of 492649
+ 380516 string characters out of 6129623
+ 487644 words of memory out of 5000000
+ 23028 multiletter control sequences out of 15000+600000
+ 15597 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,15n,90p,1402b,990s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,15n,90p,1431b,990s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -978,15 +972,16 @@ Here is how much of TeX's memory you used:
 usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
 r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
 local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
-cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
-ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on liquid.pdf (25 pages, 247642 bytes).
+cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loca
+l/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
+ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
+e/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on liquid.pdf (26 pages, 265596 bytes).
 PDF statistics:
- 139 PDF objects out of 1000 (max. 8388607)
- 97 compressed objects within 1 object stream
+ 147 PDF objects out of 1000 (max. 8388607)
+ 102 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

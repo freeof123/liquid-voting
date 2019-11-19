@@ -1,5 +1,5 @@
 \section{Algorithm}
-\subsection{Overview and Notations}
+\subsection{Overview}
 In order to real-time display the voting status, the core of our algorithm is to record and maintain each node's ``lost voting power", initially valued zero. When a voter votes, his actual voting power is his total voting power minus his lost voting power. Meanwhile, some other voters' lost voting power should be updated after he votes. As long as each voter's ``lost voting power" can be updated within $O(\log n)$, the liquid democracy problem can be solved. 
 
 See again the example in Figure \ref{fig:1}, 
@@ -30,16 +30,16 @@ The following two sequences are used, the preorder sequence and the bracket sequ
 
 Our algorithm consists of the following three parts.
 \begin{itemize}
-	\item In prepare period, each voter locally do an initialization of all voters' data, including their total voting powers, index of the preorder sequence, index of the bracket sequence and so on. The data are submit to the voting contract together with voters' voting massages, and are checked by the Merkel root. 
-	\item For each voting massage, find the voter's nearest voted parent, based on the interval tree with respect to the preorder sequence. 
-	\item For each voting  massage, update lost voting powers of nodes on the path from the voter to the voter's nearest voted parent, based on the interval tree with respect to the bracket sequence. 
+	\item In prepare period, each voter locally do an initialization of all voters' data, including their total voting powers, index of the preorder sequence, index of the bracket sequence and so on. The data are submit to the voting contract together with voters' voting massages, and are checked by the Merkel root (Section \ref{sec:step1}).
+	\item For each voting massage, find the voter's nearest voted parent, based on the interval tree with respect to the preorder sequence (\ref{sec:step2}).
+	\item For each voting  massage, update lost voting powers of nodes on the path from the voter to the voter's nearest voted parent, based on the interval tree with respect to the bracket sequence (\ref{sec:step3}).
 \end{itemize}
 \subsection{Notations}
 We have the following variables:
 \begin{itemize}
 	\item $T$: The delegate tree, which is generated and stored off-chain. 
-	\item $n$: Number of nodes, as well as the index in the preorder sequence (called preorder index for short). 
-	\item $n_0$: Index for the bracket sequence. 
+	\item $n$: Number of nodes, as well as the length of the preorder sequence (called preorder index for short). 
+	\item $n_0$: Length of the bracket sequence. 
 	\item $node$: A type, representing the voters. 
 	\item $node.stake$: Node's voting power, which is given from the snapshot.
 	\item $node.index$: Index of the node in the pre-order sequence.
@@ -50,14 +50,15 @@ We have the following variables:
 	\item $node.endpoint$: The maximum preorder index among the node's children (include multi-level).
 	\item $node.leftbracket$: The first index where the node appears in the bracket sequence. 
 	\item $node.rightbracket$: The second index where the node appears in the bracket sequence. 
-	\item $node.power$: Node's total voting power (including its delegators').
+	\item $node.power$: Node's total voting power (including its children's).
 	\item $node.candidate$: The candidate that the voter votes.
 	\item $v[]$: Recording the votes of candidates.
-	\item $lazy_1[]$: lazy-tag of the interval tree with respect to the preorder sequence, which also reflects the index of the nearest voted parent.
-	\item $lazy_2[]$: lazy-tag of the interval tree with respect to the bracket sequence, which also reflects the ``S" value of the sequence (showed in the following).
+	\item $lazy_1[]$: Lazy-tag of the interval tree with respect to the preorder sequence, which also reflects the index of the nearest voted parent.
+	\item $lazy_2[]$: Lazy-tag of the interval tree with respect to the bracket sequence, which also reflects the ``score" of the sequence (showed in the following).
 \end{itemize}
 All variables are global and initially valued 0 unless otherwise stated.  For other intermediate variables we will illustrate in the following subsection.
 \subsection{Spare and Prepare Period}
+\label{sec:step1}
 \textbf{Spare Period}
 
 A perpetual smart contract, called the {\em delegate contract}, are established. It has two methods:
@@ -70,12 +71,12 @@ A perpetual smart contract, called the {\em delegate contract}, are established.
 
 a) At the beginning of the prepare period, all on-chain information are snapshotted by the current height of the blockchain, mainly, each voter's delegate and stake. Then, each voter involved in the voting locally constructs the delegate tree $T$ and gets all voters' voting powers according to the following rule. 
 \begin{itemize}
-	\item For each voter, get his last delegate operation from the snapshot and add the corresponding direct edge to the delegate graph. Then for all edges that are on a cycle, delete the latest edge. Then repeat the deletion until the graph has no cycle in the delegate graph\footnote{All transactions in Ethereum are attached with a time stamp. The time order on the blockchain is define that, if a transaction's block height is larger than another trasaction, then the former is later than the latter. If two transaction have the same block height, the transaction with the larger timestamp are later. The rule of Etherum guarantees that the timestamp can not be forged too far from the actual time otherwise the transaction is infeasible}. After that, add an edge from each zero-outdegree node to the virtual node, resulting in the delegate tree $T$. Since the rule is deterministic, all voters obtain a same delegate tree. 
+	\item For each voter, get his last delegate operation from the snapshot and add the corresponding direct edge to the delegate graph. Then for all edges that are on a cycle, delete the latest edge. Then repeat the deletion until the delegate graph has no cycle\footnote{All transactions in Ethereum are attached with a time stamp. The time order on the blockchain is define that, if a transaction's block height is larger than another trasaction, then the former is later than the latter. If two transaction have the same block height, the transaction with the larger timestamp are later. The rule of Etherum guarantees that the timestamp can not be forged too far from the actual time otherwise the transaction is infeasible}. After that, add an edge from each zero-outdegree node to the virtual node, resulting in the delegate tree $T$. Since the rule is deterministic, all voters obtain a same delegate tree. 
 	We show in next section  that the construction rule is incentive compatible for voters, 
 	\item  Usually in a decentralized authority organization (DAO), a voter's voting power equals to one of his stake on the blockchain (say, one kind of ERC-20 token). So all voters' voting powers can be obtained from the snapshot ($node.stake$ in the notation). There are other off-chain method in practice to distribute voting powers, which is not critical of our paper as long as all voters can reach an agreement.
 \end{itemize}
 
-b) After the construction of $T$, we use $T.root$ to denote the root of $T$, i.e., the virtual node. Then, each voter locally call $Preorder(T.root)$, to obtain initialization data.
+b) After the construction of $T$, we use $T.root$ to denote the root of $T$, i.e., the virtual node. Then, each voter locally call $Preorder(child)$, to obtain initialization data. ($n$ and $n_0$ is initialed $-1$ to exclude the virtual node).
 
 \begin{algorithm}
 	\label{alg:preorder}
@@ -83,7 +84,7 @@ b) After the construction of $T$, we use $T.root$ to denote the root of $T$, i.e
 	\hrule
 	$n \leftarrow n+1$\;
 	$n_0 \leftarrow n_0+1$\;
-	$root.leftbracket \leftarrow m$\;
+	$root.leftbracket \leftarrow n_0$\;
 	$root.index \leftarrow n$\;
 	\For{$node$ in $root$'s direct child}
 	{
@@ -132,7 +133,7 @@ e) Upon receiving a voting massage {\em(data, proof, node.candidate)}, the votin
 	$update1(node.index+1,node.endpoint,1,n,1,node.index)${\color{gray}
 		//Update nearest voted parents}\;
 	$update2(parent.leftbracket,node.leftbracket,1,2n,1,t)${\color{gray}
-		\\//Update ``S" values}\;
+		\\//Update scores}\;
 	Output $C[]$
 	\label{alg:vote}
 \end{algorithm}
@@ -142,11 +143,12 @@ f) The Algorithm \ref{alg:vote} shows the main procedure for processing a voting
 	\item Compute the voter's lost voting power.
 	\item Define $t$ to be the voter's total voting power minus lost voting power, which represents his actual votes. 
 	\item Find the voter's nearest voted parent, and then update other voters' nearest voterd parent (only the voter's children are affected).
-	\item The votes of the canditate that the voter's nearest parent votes decreases by $t$.
+	\item The ballot of the candidate that the voter's nearest parent votes decreases by $t$.
 	\item Update the lost voting powers of the nodes on the path from the voter to the voter's nearest voted parent.
 \end{itemize}
 So far, the total procedure of algorithm is produced. In the next two subsections we will introduce the two functions $update1(),update2()$ 
 \subsection{Find the Nearest Voted Parent}
+\label{sec:step2}
 The function $update1()$ achieves the goal of finding the voter's nearest voted parent, by implementing the update operation of the interval tree with respect to the preorder sequence. The lazy-tag of the interval tree's leaf node records the preorder index of corresponding voter's nearest voted parent. 
 
 The following three observations are sufficient for the correctness:
@@ -175,8 +177,8 @@ For a node (voter), indexes from $node.index+1$ to $node.endpoint$ represents th
 		\If {$lazy_1[2k]<lazy_1[k]$} {$lazy_1[2k] \leftarrow lazy_1[k]$}
 		\If {$lazy_1[2k+1]<lazy_1[k]$} {$lazy_1[2k+1] \leftarrow lazy_1[k]${\color{gray}
 				//pass down the lazy-tag}}
-		\If {$L \leq m$}{$update(L,\min\{m,R\},l,m,2k,v)$}
-		\If {$R>m$}{$update(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
+		\If {$L \leq m$}{$update1(L,\min\{m,R\},l,m,2k,v)$}
+		\If {$R>m$}{$update1(\max\{m+1,L\},R,m+1,r,2k+1,v)$}
 	}
 \end{algorithm}
 
@@ -186,7 +188,8 @@ For a node (voter), indexes from $node.index+1$ to $node.endpoint$ represents th
 \end{itemize}
 
 \subsection{Update the Lost Voting Power}
-When a voter votes, all nodes on the path from the voter to its nearest voted parented should update their lost voting powers. See Figure \ref{fig:2}, if voter 8 votes after voter 1 votes, then path $7\rightarrow3\rightarrow2\rightarrow1$ should be updated. However it is not a successive interval in the pre-order sequence.
+\label{sec:step3}
+When a voter votes, all nodes on the path from the voter to its nearest voted parented should update their lost voting powers. See Figure \ref{fig:2}, if voter 8 votes after voter 1 votes, then path $7\rightarrow3\rightarrow2\rightarrow1$ should be updated. However it is not a successive interval in the preorder sequence.
 \begin{figure}
   \centering
 	%\includegraphics[width=0.6\textwidth]{3.png}
@@ -202,15 +205,15 @@ $$1,2,3,4,5,6,6,5,4,7,8,8,7,3,2,9,10,10,11,11,12,12,9,1$$
 
 For a direct path starts from $u$ and ends at $v$, define the path's {\em bracket interval} to be indexed from $v.leftbracket$ to $u.leftbreacket$. The following observation shows the property of the bracket interval:
 \begin{observation}
-Given a direct path, for any node that does not lie on the path, it occur twice or does not occur in the path's bracket interval. For any node that lies on the path, it occur exactly once in the path's bracket interval. Moreover, only the nodes' first appearance lies in the interval.
+Given a direct path, for any node that does not lie on the path, it occur twice or does not occur in the path's bracket interval. For any node that lies on the path, it occur exactly once in the path's bracket interval. Moreover, only the node’s first appearance lies in the interval.
 \end{observation}
 For example, suppose the path from 8 to 1 is to be updated, its bracket interval is $1,2,3,4,5,6,6,5,4,7,8$ (index 1-11). Nodes 4,5,6,11,12 do not lie on the path, so they occur twice or do not occur in the interval. Nodes 1,2,3,7,8 lie in the path, so they occur once in the interval. 
 
-We then define an array $s[]$ for recording the so-called ``S" value of the bracket sequence. Given a path where the nodes' lost voting powers need to add some value, we add that value into the ``S" values of the path's bracket interval. Then for a node's  lost voting power, we can compute it by
+We then define an array $s[]$ for recording the so-called ``score" of the bracket sequence. Given a path where the nodes' lost voting powers need to add some value, we add that value into the scores of the path's bracket interval. Then for a node's  lost voting power, we can compute it by
  $$s[node.leftbracket]-s[node.rightbracket]$$
- The reason is that, when we increase the ``S" value, only the nodes on the path increase their lost voting powers (only the leftbracket increases). For a node outside the path, the ``S" value either does not change or both its leftbraket and rightbracket increase by the same value, thus the lost voting power does not change.
+ The reason is that, when we increase the score, only the nodes on the path increase their lost voting powers (only the leftbracket increases). For a node outside the path, the scores either does not change or both its leftbraket and rightbracket increase by the same value, thus the lost voting power does not change.
 
-We construct another interval tree with respect to the bracket sequence  and maintain the ``S" value,  recorded in the variable $lazy_2[]$ of leaf nodes. The function $update2()$ gives the implementation.
+We construct another interval tree with respect to the bracket sequence  and maintain the score, recorded in the variable $lazy_2[]$ of leaf nodes. The function $update2()$ gives the implementation.
 \begin{algorithm}
 	\textbf{procedure} $update2(int~L,int ~R, int~l, int~r, int~k, int~v)$
 	\hrule
@@ -230,7 +233,7 @@ We construct another interval tree with respect to the bracket sequence  and mai
     }
 \end{algorithm}
 \begin{itemize}
-	\item {\em update2(node.leftbracket,node.leftbracket,1,2n,1,0)} finds the ``S" value of the node's leftbracket. Similar for the rightbracket. 
-	\item {\em update2(parent.leftbracket, node.leftbracket,1,2n,1,t)} update the ``S" value of the bracket interval of the path from the voter to its nearest parent.
+	\item {\em update2(node.leftbracket,node.leftbracket,1,2n,1,0)} finds the score of the node's leftbracket. Similar for the rightbracket. 
+	\item {\em update2(parent.leftbracket, node.leftbracket,1,2n,1,t)} update the score of the bracket interval of the path from the voter to its nearest parent.
 \end{itemize}
 So far our algorithm is introduced. In the next section we prove some theorems.

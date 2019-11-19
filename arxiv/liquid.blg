@@ -6,45 +6,45 @@ Database file #1: ref.bib
 Warning--empty journal in birch2016full
 Warning--empty journal in hardt2015google
 Warning--empty journal in nakamoto2008bitcoin
-You've used 23 entries,
+You've used 26 entries,
             2118 wiz_defined-function locations,
-            625 strings with 7439 characters,
-and the built_in function-call counts, 7570 in all, are:
-= -- 762
-> -- 307
-< -- 7
-+ -- 125
-- -- 98
-* -- 454
-:= -- 1229
-add.period$ -- 73
-call.type$ -- 23
-change.case$ -- 113
+            641 strings with 8060 characters,
+and the built_in function-call counts, 9022 in all, are:
+= -- 919
+> -- 361
+< -- 10
++ -- 147
+- -- 116
+* -- 541
+:= -- 1436
+add.period$ -- 85
+call.type$ -- 26
+change.case$ -- 131
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 329
-empty$ -- 623
-format.name$ -- 98
-if$ -- 1626
+cite$ -- 29
+duplicate$ -- 396
+empty$ -- 743
+format.name$ -- 116
+if$ -- 1964
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 26
-newline$ -- 118
-num.names$ -- 46
-pop$ -- 144
+int.to.str$ -- 26
+missing$ -- 29
+newline$ -- 133
+num.names$ -- 52
+pop$ -- 171
 preamble$ -- 1
-purify$ -- 93
+purify$ -- 108
 quote$ -- 0
-skip$ -- 243
+skip$ -- 295
 stack$ -- 0
-substring$ -- 454
-swap$ -- 83
-text.length$ -- 7
+substring$ -- 558
+swap$ -- 114
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 86
+type$ -- 98
 warning$ -- 3
-while$ -- 79
-width$ -- 25
-write$ -- 246
+while$ -- 94
+width$ -- 28
+write$ -- 282
 (There were 3 warnings)

@@ -77,6 +77,12 @@ Anson Kahng, Simon Mackenzie, and Ariel~D Procaccia.
 \newblock In {\em Thirty-Second AAAI Conference on Artificial Intelligence},
   2018.
 
+\bibitem{kiayias2002self}
+Aggelos Kiayias and Moti Yung.
+\newblock Self-tallying elections and perfect ballot secrecy.
+\newblock In {\em International Workshop on Public Key Cryptography}, pages
+  141--158. Springer, 2002.
+
 \bibitem{kohno2004analysis}
 Tadayoshi Kohno, Adam Stubblefield, Aviel~D Rubin, and Dan~S Wallach.
 \newblock Analysis of an electronic voting system.
@@ -88,6 +94,12 @@ Thad Kousser and Megan Mullin.
 \newblock Does voting by mail increase participation? using matching to analyze
   a natural experiment.
 \newblock {\em Political Analysis}, 15(4):428--445, 2007.
+
+\bibitem{mccorry2017smart}
+Patrick McCorry, Siamak~F Shahandashti, and Feng Hao.
+\newblock A smart contract for boardroom voting with maximum voter privacy.
+\newblock In {\em International Conference on Financial Cryptography and Data
+  Security}, pages 357--375. Springer, 2017.
 
 \bibitem{miller1969program}
 James~C Miller.
@@ -126,5 +138,12 @@ William~S. U'Ren.
 Gavin Wood et~al.
 \newblock Ethereum: A secure decentralised generalised transaction ledger.
 \newblock {\em Ethereum project yellow paper}, 151(2014):1--32, 2014.
+
+\bibitem{yang2018decentralized}
+Xuechao Yang, Xun Yi, Surya Nepal, and Fengling Han.
+\newblock Decentralized voting: a self-tallying voting system using a smart
+  contract on the ethereum blockchain.
+\newblock In {\em International Conference on Web Information Systems
+  Engineering}, pages 18--35. Springer, 2018.
 
 \end{thebibliography}
