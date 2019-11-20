@@ -47,14 +47,15 @@ We have the following variables:
 	parameter.
 	\item $b[]$: Mapping from a node's preorder index to the node.
 	\item $nearestparent[]$: Mapping from a node's preorder index to its nearest voted parent's preorder index.
+	\item $s[]$:  The score of the bracket sequence (showed in the following).
 	\item $node.endpoint$: The maximum preorder index among the node's children (include multi-level).
-	\item $node.leftbracket$: The first index where the node appears in the bracket sequence. 
-	\item $node.rightbracket$: The second index where the node appears in the bracket sequence. 
+	\item $node.left$: The first index where the node appears in the bracket sequence. 
+	\item $node.right$: The second index where the node appears in the bracket sequence. 
 	\item $node.power$: Node's total voting power (including its children's).
 	\item $node.candidate$: The candidate that the voter votes.
 	\item $v[]$: Recording the votes of candidates.
 	\item $lazy_1[]$: Lazy-tag of the interval tree with respect to the preorder sequence, which also reflects the index of the nearest voted parent.
-	\item $lazy_2[]$: Lazy-tag of the interval tree with respect to the bracket sequence, which also reflects the ``score" of the sequence (showed in the following).
+	\item $lazy_2[]$: Lazy-tag of the interval tree with respect to the bracket sequence, which also reflects the ``score" of the sequence.
 \end{itemize}
 All variables are global and initially valued 0 unless otherwise stated.  For other intermediate variables we will illustrate in the following subsection.
 \subsection{Spare and Prepare Period}
@@ -84,17 +85,17 @@ b) After the construction of $T$, we use $T.root$ to denote the root of $T$, i.e
 	\hrule
 	$n \leftarrow n+1$\;
 	$n_0 \leftarrow n_0+1$\;
-	$root.leftbracket \leftarrow n_0$\;
+	$root.left \leftarrow n_0$\;
 	$root.index \leftarrow n$\;
+	 $root.power \leftarrow root.stake$\;
 	\For{$node$ in $root$'s direct child}
 	{
-		$root.power \leftarrow root.power+node.stake$\;
 		$Preorder(node)$
+		$root.power \leftarrow root.power+node.power$\;
 	}
-    $root.power \leftarrow root.power+root.stake$\;
 	$root.endpoint \leftarrow n$\;
 	$n_0 \leftarrow n_0+1$\;
-	$root.rightbracket \leftarrow n_0$\;
+	$root.right \leftarrow n_0$\;
 \end{algorithm}
 Intrinsically, a preorder traversal are executed, and all nodes' initialization data are computed simultaneously. 
 
@@ -120,19 +121,19 @@ e) Upon receiving a voting massage {\em(data, proof, node.candidate)}, the votin
 		\Return ;
 	}
 	$b[node.index]=node$\;
-	$update2(node.leftbracket,node.leftbracket,1,2n,1,0)${\color{gray}
+	$update2(node.left,node.left,1,2n,1,0)${\color{gray}
 		//Find the value of node's leftbracket}\;
-	$update2(node.rightbracket,node.rightbracket,1,2n,1,0)${\color{gray}
+	$update2(node.right,node.right,1,2n,1,0)${\color{gray}
 		//Find the value of node's rightbracket}\;
-	$int~t=node.votingpower-lazy_2[node.leftbracket]+lazy_2[node.rightbracket]$\;
+	$int~t=node.power-s[node.left]+s[node.right]$\;
 	$C[node.candidate]+=t$\;
 	$update1(node.index,node.index,1,n,1,0)${\color{gray}
 		//Find the node's nearest parent}\;
-	$Node~parent = b[nearestparent[node.nunmber]]$\;
+	$Node~parent = b[nearestparent[node.index]]$\;
 	$C[parent.candndate]-=t$\;
 	$update1(node.index+1,node.endpoint,1,n,1,node.index)${\color{gray}
 		//Update nearest voted parents}\;
-	$update2(parent.leftbracket,node.leftbracket,1,2n,1,t)${\color{gray}
+	$update2(parent.left,node.left,1,2n,1,t)${\color{gray}
 		\\//Update scores}\;
 	Output $C[]$
 	\label{alg:vote}
@@ -210,7 +211,7 @@ Given a direct path, for any node that does not lie on the path, it occur twice 
 For example, suppose the path from 8 to 1 is to be updated, its bracket interval is $1,2,3,4,5,6,6,5,4,7,8$ (index 1-11). Nodes 4,5,6,11,12 do not lie on the path, so they occur twice or do not occur in the interval. Nodes 1,2,3,7,8 lie in the path, so they occur once in the interval. 
 
 We then define an array $s[]$ for recording the so-called ``score" of the bracket sequence. Given a path where the nodes' lost voting powers need to add some value, we add that value into the scores of the path's bracket interval. Then for a node's  lost voting power, we can compute it by
- $$s[node.leftbracket]-s[node.rightbracket]$$
+ $$s[node.left]-s[node.right]$$
  The reason is that, when we increase the score, only the nodes on the path increase their lost voting powers (only the leftbracket increases). For a node outside the path, the scores either does not change or both its leftbraket and rightbracket increase by the same value, thus the lost voting power does not change.
 
 We construct another interval tree with respect to the bracket sequence  and maintain the score, recorded in the variable $lazy_2[]$ of leaf nodes. The function $update2()$ gives the implementation.
@@ -219,12 +220,16 @@ We construct another interval tree with respect to the bracket sequence  and mai
 	\hrule
 	\eIf {$L=l$ and $R=r$}
 	{
-       $lazy_2[k] \rightarrow lazy_2[k]+v$
+       $lazy_2[k] \leftarrow lazy_2[k]+v$\;
+       \If {$L=R$}
+       {
+       	   $s[L]=lazy_2[k]$
+       }
 	}
 	{
 		$int~m \leftarrow (l+r)/2$\;
-		$lazy_2[2k] \rightarrow lazy_2[2k]+lazy_2[k]$\;
-		$lazy_2[2k+1]\rightarrow lazy_2[2k+1]+lazy_2[k]$\;
+		$lazy_2[2k] \leftarrow lazy_2[2k]+lazy_2[k]$\;
+		$lazy_2[2k+1]\leftarrow lazy_2[2k+1]+lazy_2[k]$\;
 		$lazy_2[k] \leftarrow 0$
 			{\color{gray}
 		//pass down the lazy-tag}\;
@@ -233,7 +238,7 @@ We construct another interval tree with respect to the bracket sequence  and mai
     }
 \end{algorithm}
 \begin{itemize}
-	\item {\em update2(node.leftbracket,node.leftbracket,1,2n,1,0)} finds the score of the node's leftbracket. Similar for the rightbracket. 
-	\item {\em update2(parent.leftbracket, node.leftbracket,1,2n,1,t)} update the score of the bracket interval of the path from the voter to its nearest parent.
+	\item {\em update2(node.left,node.left,1,2n,1,0)} finds the score of the node's leftbracket (recorded in the array $s[]$). Similar for the rightbracket. 
+	\item {\em update2(parent.left, node.left,1,2n,1,t)} update the score of the bracket interval of the path from the voter to its nearest parent.
 \end{itemize}
 So far our algorithm is introduced. In the next section we prove some theorems.

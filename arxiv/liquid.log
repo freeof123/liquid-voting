@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.2)  19 NOV 2019 20:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.2)  20 NOV 2019 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -250,16 +250,17 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 \Gin@req@height=\dimen140
 \Gin@req@width=\dimen141
 )
-(/usr/local/texlive/2018/texmf-dist/tex/latex/natbib/natbib.sty
-Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip70
-\bibsep=\skip71
-LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count136
-)
 (/usr/local/texlive/2018/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/preprint/authblk.sty
+Package: authblk 2001/02/27 1.3 (PWD)
+\affilsep=\skip70
+\@affilsep=\skip71
+\c@Maxaffil=\count136
+\c@authors=\count137
+\c@affil=\count138
 )
 (/usr/local/texlive/2018/texmf-dist/tex/latex/tikz-qtree/tikz-qtree.sty
 (/usr/local/texlive/2018/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
@@ -304,10 +305,10 @@ ode.tex
 \pgf@yc=\dimen151
 \w@pgf@writea=\write5
 \r@pgf@reada=\read1
-\c@pgf@counta=\count137
-\c@pgf@countb=\count138
-\c@pgf@countc=\count139
-\c@pgf@countd=\count140
+\c@pgf@counta=\count139
+\c@pgf@countb=\count140
+\c@pgf@countc=\count141
+\c@pgf@countd=\count142
 \t@pgf@toka=\toks51
 \t@pgf@tokb=\toks52
 \t@pgf@tokc=\toks53
@@ -328,8 +329,8 @@ File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
 code.tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count141
-\pgfsyssoftpath@bigbuffer@items=\count142
+\pgfsyssoftpath@smallbuffer@items=\count143
+\pgfsyssoftpath@bigbuffer@items=\count144
 )
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
 code.tex
@@ -342,7 +343,7 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen152
-\pgfmath@count=\count143
+\pgfmath@count=\count145
 \pgfmath@box=\box52
 \pgfmath@toks=\toks54
 \pgfmath@stack@operand=\toks55
@@ -367,7 +368,7 @@ code.tex)
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
 erarithmetics.code.tex)))
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count144
+\c@pgfmathroundto@lastzeros=\count146
 ))
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
 de.tex
@@ -405,7 +406,7 @@ File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box53
 \pgf@hbox=\box54
 \pgf@layerbox@main=\box55
-\pgf@picture@serial@count=\count145
+\pgf@picture@serial@count=\count147
 )
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
 ate.code.tex
@@ -440,7 +441,7 @@ File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
 e.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
 \pgf@max=\dimen176
-\pgf@sys@shading@range@num=\count146
+\pgf@sys@shading@range@num=\count148
 )
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
 e.tex
@@ -503,7 +504,7 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count147
+\pgf@plot@mark@count=\count149
 \pgfplotmarksize=\dimen181
 )
 \tikz@lastx=\dimen182
@@ -516,19 +517,19 @@ File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
 \tikz@figbox@bg=\box59
 \tikz@tempbox=\box60
 \tikz@tempbox@bg=\box61
-\tikztreelevel=\count148
-\tikznumberofchildren=\count149
-\tikznumberofcurrentchild=\count150
-\tikz@fig@count=\count151
+\tikztreelevel=\count150
+\tikznumberofchildren=\count151
+\tikznumberofcurrentchild=\count152
+\tikz@fig@count=\count153
 
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count152
-\pgfmatrixcurrentcolumn=\count153
-\pgf@matrix@numberofcolumns=\count154
+\pgfmatrixcurrentrow=\count154
+\pgfmatrixcurrentcolumn=\count155
+\pgf@matrix@numberofcolumns=\count156
 )
-\tikz@expandcount=\count155
+\tikz@expandcount=\count157
 
 (/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -553,9 +554,9 @@ File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
 \pgftree@savechildx=\dimen199
 \pgftree@childy=\dimen256
 \pgftree@savechildy=\dimen257
-\pgftree@childi=\count156
-\pgftree@savechildi=\count157
-\pgftree@level=\count158
+\pgftree@childi=\count158
+\pgftree@savechildi=\count159
+\pgftree@level=\count160
 \pgftree@depth=\dimen258
 \pgf@subpic@hbox@children=\box62
 \pgf@subpic@minx@children=\dimen259
@@ -667,17 +668,17 @@ File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
 s/tikzlibraryautomata.code.tex
 File: tikzlibraryautomata.code.tex 2008/07/14 v3.0.1a (rcs-revision 1.3)
 )
-\c@theorem=\count159
-\c@definition=\count160
-\c@proposition=\count161
-\c@corollary=\count162
-\c@claim=\count163
-\c@lemma=\count164
-\c@note=\count165
-\c@open=\count166
-\c@example=\count167
-\c@conjecture=\count168
-\c@observation=\count169
+\c@theorem=\count161
+\c@definition=\count162
+\c@proposition=\count163
+\c@corollary=\count164
+\c@claim=\count165
+\c@lemma=\count166
+\c@note=\count167
+\c@open=\count168
+\c@example=\count169
+\c@conjecture=\count170
+\c@observation=\count171
  (./liquid.aux)
 \openout1 = `liquid.aux'.
 
@@ -696,16 +697,16 @@ LaTeX Font Info:    ... okay on input line 37.
 
 (/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count170
+\scratchcounter=\count172
 \scratchdimen=\dimen266
 \scratchbox=\box83
-\nofMPsegments=\count171
-\nofMParguments=\count172
+\nofMPsegments=\count173
+\nofMParguments=\count174
 \everyMPshowfont=\toks62
-\MPscratchCnt=\count173
+\MPscratchCnt=\count175
 \MPscratchDim=\dimen267
-\MPnumerator=\count174
-\makeMPintoPDFobject=\count175
+\MPnumerator=\count176
+\makeMPintoPDFobject=\count177
 \everyMPtoPDFconversion=\toks63
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -765,23 +766,33 @@ e
 ))
 ABD: EveryShipout initializing macros
 (/usr/local/texlive/2018/texmf-dist/tex/latex/arabtex/apatch.sty
-\a@lines=\count176
+\a@lines=\count178
 \a@Lwidth=\dimen268
 \a@displaywidth=\dimen269
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/arabtex/alocal.sty
 (ArabTeX) 3.11 local stub, 26.02.2006)
 (ArabTeX) version 3.11s (02.07.2006): second phase of patching)
-LaTeX Font Info:    Try loading font information for U+msa on input line 45.
+LaTeX Font Info:    Try loading font information for U+msa on input line 52.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 45.
+LaTeX Font Info:    Try loading font information for U+msb on input line 52.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (./intro.tex
+)
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 52.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 52.
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 52.
+ (./intro.tex
 [1
 
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
@@ -792,10 +803,6 @@ IPS/eip-150.md,
  []
 
 [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 23.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 23.
 
@@ -804,14 +811,14 @@ Overfull \hbox (12.30276pt too wide) in paragraph at lines 25--26
 stor-age, through
  []
 
-) (./related.tex [4]) (./preliminary.tex
+[4]) (./related.tex) (./preliminary.tex
 Overfull \hbox (3.44037pt too wide) in paragraph at lines 6--1
 \OT1/cmr/m/n/12 solv-ing the on-chain liq-uid democ-racy prob-lem, while the al
 -go-rithms in Google
  []
 
 [5] [6] (./1.tex) [7]
-<merkel.png, id=40, 991.705pt x 508.90125pt>
+<merkel.png, id=41, 991.705pt x 508.90125pt>
 File: merkel.png Graphic file (type png)
 <use merkel.png>
 Package pdftex.def Info: merkel.png  used on input line 60.
@@ -821,29 +828,29 @@ Overfull \hbox (39.00238pt too wide) in paragraph at lines 60--62
  [][] 
  []
 
-[8] (./it.tex) [9 <./merkel.png>] [10]) (./algorithm.tex [11] [12] [13]
+[8] [9 <./merkel.png>] (./it.tex) [10]) (./algorithm.tex [11] [12] [13]
 [14] [15]
-Overfull \hbox (2.29764pt too wide) in paragraph at lines 108--109
+Overfull \hbox (2.29764pt too wide) in paragraph at lines 109--110
 \OT1/cmr/m/it/12 node.endpoint, node.leftbracket, node.rightbracket) \OT1/cmr/m
 /n/12 (here the node cor-re-sponds
  []
 
 [16] [17]
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 158.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 159.
 
-Overfull \hbox (0.4984pt too wide) in paragraph at lines 186--187
+Overfull \hbox (0.4984pt too wide) in paragraph at lines 187--188
 []\OT1/cmr/m/it/12 update1(node.index+1, node.endpoint,1,n,1,node.index) \OT1/c
 mr/m/n/12 uses the voter's
  []
 
 
-Overfull \hbox (8.8192pt too wide) in paragraph at lines 187--188
+Overfull \hbox (8.8192pt too wide) in paragraph at lines 188--189
 []\OT1/cmr/m/it/12 update1(node.index,node.index,1,n,1,0) \OT1/cmr/m/n/12 finds
  and records the node's near-
  []
 
-(./3.tex) [18] [19] [20]) (./theorem.tex [21] [22]) (./experiment.tex) [23]
+(./3.tex) [18] [19] [20]) (./theorem.tex [21] [22]) (./experiment.tex [23])
 (./liquid.bbl [24] [25]) [26] (./liquid.aux)
 
  *File List*
@@ -898,8 +905,8 @@ graphicx.sty    2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 graphics.sty    2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
     trig.sty    2016/01/03 v1.10 sin cos tan (DPC)
 graphics.cfg    2016/06/04 v1.11 sample graphics configuration
-  natbib.sty    2010/09/13 8.31b (PWD, AO)
      url.sty    2013/09/16  ver 3.4  Verb mode for urls, etc.
+ authblk.sty    2001/02/27 1.3 (PWD)
 tikz-qtree.sty    
     tikz.sty    2015/08/07 v3.0.1a (rcs-revision 1.151)
      pgf.sty    2015/08/07 v3.0.1a (rcs-revision 1.15)
@@ -942,8 +949,8 @@ epstopdf-sys.cfg    2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
   apatch.sty    2006/07/02  3.11s last minute patches 
     umsa.fd    2013/01/14 v3.01 AMS symbols A
     umsb.fd    2013/01/14 v3.01 AMS symbols B
-   intro.tex
   omscmr.fd    2014/09/29 v2.5h Standard LaTeX font definitions
+   intro.tex
  related.tex
 preliminary.tex
      ./1.tex
@@ -958,10 +965,10 @@ experiment.tex
 
  ) 
 Here is how much of TeX's memory you used:
- 19612 strings out of 492649
- 380516 string characters out of 6129623
- 487644 words of memory out of 5000000
- 23028 multiletter control sequences out of 15000+600000
+ 19306 strings out of 492649
+ 375995 string characters out of 6129623
+ 484275 words of memory out of 5000000
+ 22722 multiletter control sequences out of 15000+600000
  15597 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,15n,90p,1431b,990s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -976,12 +983,13 @@ cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loca
 l/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/t
 exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
 ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
-e/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on liquid.pdf (26 pages, 265596 bytes).
+ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive
+/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
+2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on liquid.pdf (26 pages, 275355 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
- 102 compressed objects within 2 object streams
+ 151 PDF objects out of 1000 (max. 8388607)
+ 105 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 
