@@ -8,7 +8,9 @@ NaiveLiquidVote::NaiveLiquidVote(const LiquidDemocracy &democracy)
 
 void NaiveLiquidVote::vote(voter_id_t voter, option_id_t option_id) {
   vpower_t p = get_total_power(voter);
+  bool voted_before = false;
   if (m_voted.find(voter) != m_voted.end()) {
+    voted_before = true;
     option_id_t old = m_voted[voter];
     if (old == option_id)
       return;
@@ -20,7 +22,8 @@ void NaiveLiquidVote::vote(voter_id_t voter, option_id_t option_id) {
   if (parent.is_none()) {
     return;
   }
-  if (m_voted.find(parent.value()) != m_voted.end()) {
+
+  if (!voted_before && m_voted.find(parent.value()) != m_voted.end()) {
     option_id_t option = m_voted[parent.value()];
     m_ballots[option] -= p;
   }

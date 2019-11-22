@@ -31,16 +31,25 @@ void FastLiquidVote::actual_vote(node_t node, option_id_t option_id) {
       node->power - m_score[node->leftbracket] + m_score[node->rightbracket];
 
   m_ballots[node->candidate] += t;
-  update1(node->index, node->index, 1, n, 1, 0);
-  node_t parent = m_b[m_nearest_parent[node->index]];
-  if (parent && parent->exists) {
-    m_ballots[parent->candidate] -= t;
-    update1(node->index + 1, node->endpoint, 1, n, 1, node->index);
-    update2(parent->leftbracket, node->leftbracket, 1, 2 * n, 1, t);
+
+  if (m_voted.find(node->address) != m_voted.end()) {
+    option_id_t old = m_voted[node->address];
+    LOG(INFO) << "remove for old: " << old << ", " << t;
+    m_ballots[old] -= t;
   } else {
-    update1(node->index + 1, node->endpoint, 1, n, 1, node->index);
-    update2(1, node->leftbracket, 1, 2 * n, 1, t);
+    update1(node->index, node->index, 1, n, 1, 0);
+    node_t parent = m_b[m_nearest_parent[node->index]];
+    if (parent && parent->exists) {
+      m_ballots[parent->candidate] -= t;
+      update1(node->index + 1, node->endpoint, 1, n, 1, node->index);
+      update2(parent->leftbracket, node->leftbracket - 1, 1, 2 * n, 1, t);
+    } else {
+      update1(node->index + 1, node->endpoint, 1, n, 1, node->index);
+      update2(1, node->leftbracket - 1, 1, 2 * n, 1, t);
+    }
   }
+
+  m_voted[node->address] = option_id;
 }
 
 void FastLiquidVote::update1(uint64_t L, uint64_t R, uint64_t l, uint64_t r,
@@ -71,6 +80,9 @@ void FastLiquidVote::update1(uint64_t L, uint64_t R, uint64_t l, uint64_t r,
 
 void FastLiquidVote::update2(uint64_t L, uint64_t R, uint64_t l, uint64_t r,
                              uint64_t k, uint64_t v) {
+  if (L > R) {
+    return;
+  }
   if (L == l && R == r) {
     m_lazy2[k] = m_lazy2[k] + v;
     if (L == R) {

@@ -30,6 +30,7 @@ protected:
   Mapping<uint64_t, sequence_t> m_lazy1;
   Mapping<uint64_t, sequence_t> m_lazy2;
   Mapping<uint64_t, sequence_t> m_score;
+  std::unordered_map<voter_id_t, option_id_t> m_voted;
 };
 
 } // namespace asr

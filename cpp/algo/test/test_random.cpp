@@ -8,7 +8,7 @@ using namespace asr;
 
 TEST(random, simple) {
   LiquidDemocracy d;
-  size_t voter_num = 1000;
+  size_t voter_num = 100;
   for (uint64_t i = 1; i <= voter_num; ++i) {
     d.assign_voting_power(i, i);
     // if (i > 1) {
@@ -23,7 +23,7 @@ TEST(random, simple) {
       continue;
     d.delegate(i1, i2);
   }
-  // LOG(INFO) << d;
+  LOG(INFO) << d;
 
   NaiveLiquidVote lv(d);
   FastLiquidVote flv(d);
@@ -35,30 +35,30 @@ TEST(random, simple) {
     flv.add_option(i);
   }
 
-  size_t vote_op_num = 256;
+  size_t vote_op_num = 100;
 
-  std::unordered_set<voter_id_t> voted;
+  // std::unordered_set<voter_id_t> voted;
   for (int i = 0; i < vote_op_num; ++i) {
     uint64_t i1 = rand() % (voter_num - 1) + 1;
     uint64_t i2 = rand() % (opt_num - 1) + 1;
-    if (voted.find(i1) != voted.end()) {
-      continue;
-    }
+    // if (voted.find(i1) != voted.end()) {
+    // continue;
+    //}
     lv.vote(i1, i2);
     flv.vote(i1, i2);
-    voted.insert(i1);
+    // voted.insert(i1);
 
     bool uneq = false;
     for (size_t i = 1; i <= opt_num; ++i) {
       vpower_t b1 = lv.get_ballots(i);
       vpower_t b2 = flv.get_ballots(i);
-      // LOG(INFO) << i << ": " << b1 << ", " << b2;
+      LOG(INFO) << i << ": " << b1 << ", " << b2;
       if (b1 != b2) {
         uneq = true;
         EXPECT_TRUE(false);
       }
     }
-    // LOG(INFO) << lv;
+    LOG(INFO) << lv;
     if (uneq) {
       LOG(INFO) << "------------------";
     }

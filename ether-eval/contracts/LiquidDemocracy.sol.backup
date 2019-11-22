@@ -1,0 +1,152 @@
+pragma solidity >=0.4.21 <0.6.0;
+
+contract LiquidDemocracy{
+
+  struct vote_weight_t{
+    uint weight;
+    uint height;
+  }
+  struct delegate_t{
+    address to;
+    uint valid_height;
+    uint invalid_height;
+  }
+  struct delegatee_t{
+    address from;
+    uint valid_height;
+    uint invalid_height;
+  }
+
+  address public owner;
+  mapping (address => vote_weight_t[]) public voteWeight;
+  mapping (address => delegate_t[]) public delegateGraph;
+  mapping (address => delegatee_t[]) public delgateeGraph;
+
+
+  event Delegate(address from, address to, uint height);
+  event Undelegate(address from, address to, uint height);
+  event SetWeight(address addr, uint weight, uint height);
+  event CreateVote(address addr, uint height);
+
+  constructor() public{
+    owner = msg.sender;
+  }
+
+  modifier isOwner{
+    if(msg.sender == owner) _;
+  }
+
+  function setWeight(address addr, uint weight) public isOwner{
+    vote_weight_t[] storage vws = voteWeight[addr];
+
+    vote_weight_t storage vw = vws[vws.length ++];
+    vw.weight = weight;
+    vw.height = block.number;
+    emit SetWeight(addr, weight, block.number);
+  }
+
+  function delegate(address _to) public {
+    delegate_t[] storage ds = delegateGraph[msg.sender];
+    if(ds.length > 0){
+      //already delegate to someone
+      delegate_t storage d = ds[ds.length -1 ];
+
+      //only if not undelegate
+      if(d.invalid_height != 0){
+        d.invalid_height = block.number - 1;
+        address oldTo = d.to;
+        delegatee_t[] storage des = delgateeGraph[oldTo];
+        for(uint i = 0; i < des.length; i++){
+          delegatee_t storage de = des[i];
+          if(de.from == msg.sender){
+            de.invalid_height = block.number ;
+          }
+        }
+      }
+    }
+
+    delegate_t storage d = ds[ds.length ++];
+    d.to = _to;
+    d.valid_height= block.number;
+    d.invalid_height = 0;
+    emit Delegate(msg.sender, _to, block.number);
+
+    delegatee_t[] storage des = delgateeGraph[_to];
+    delegatee_t storage de = des[des.length ++];
+    de.from = msg.sender;
+    de.valid_height = block.number;
+    de.invalid_height = 0;
+  }
+
+  function undelegate() public{
+    delegate_t[] storage ds = delegateGraph[msg.sender];
+    delegate_t storage d = ds[ds.length -1];
+    emit Undelegate(msg.sender, d.to, block.number);
+    address _to = d.to;
+    d.invalid_height = block.number;
+
+    delegatee_t[] storage des = delgateeGraph[_to];
+    for(uint i = 0; i < des.length; i++){
+      delegatee_t storage de = des[i];
+      if(de.from == msg.sender){
+        de.invalid_height = block.number ;
+      }
+    }
+  }
+
+  function getDelegator(address addr, uint height) public view returns(address ){
+    delegate_t[] storage ds = delegateGraph[addr];
+    if(ds.length == 0) return address(0x0);
+    uint begin = 0;
+    uint end = ds.length - 1;
+    while(begin < end){
+      uint mid = (begin + end) /2;
+      if(ds[mid].height < height){
+        begin = mid + 1;
+      }else{
+        end = mid;
+      }
+    }
+
+    while(begin > 0 && ds[begin].height > height ){
+      begin --;
+    }
+    if(begin == 0 && ds[begin].height > height){
+      return address(0x0);
+    }
+    return ds[begin].to;
+  }
+
+  function getDelegatee(address addr, uint height) public view returns (address [] memory){
+    delegatee_t[] storage des = delgateeGraph[addr];
+    address[] memory ret;
+    for(uint i = 0; i < des.length; i++){
+      delegatee_t storage de = des[i];
+
+    }
+
+
+  }
+
+  function getWeight(address addr, uint height) public view returns(uint) {
+    vote_weight_t[] storage ds = voteWeight[addr];
+    if(ds.length == 0) return address(0x0);
+    uint begin = 0;
+    uint end = ds.length - 1;
+    while(begin < end){
+      uint mid = (begin + end) /2;
+      if(ds[mid].height < height){
+        begin = mid + 1;
+      }else{
+        end = mid;
+      }
+    }
+    while(begin > 0 && ds[begin].height > height ){
+      begin --;
+    }
+    if(begin == 0 && ds[begin].height > height){
+      return address(0x0);
+    }
+    return ds[begin].weight;
+  }
+}
