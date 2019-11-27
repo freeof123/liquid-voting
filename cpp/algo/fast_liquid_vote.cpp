@@ -54,6 +54,9 @@ void FastLiquidVote::actual_vote(node_t node, option_id_t option_id) {
 
 void FastLiquidVote::update1(uint64_t L, uint64_t R, uint64_t l, uint64_t r,
                              uint64_t k, uint64_t v) {
+  if (L > R) {
+    return;
+  }
   if (L == l && R == r) {
     if (v > m_lazy1[k]) {
       m_lazy1[k] = v;
