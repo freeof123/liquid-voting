@@ -51,8 +51,7 @@ contract('TestVote', (accounts) => {
 
       lvote_factory = await LiquidVoteFactory.deployed();
       assert.ok(lvote_factory);
-      t = web3.utils.keccak256('xx');
-      tokentx = await lvote_factory.createLiquidVote(democracy.address, 100, t);
+      tokentx = await lvote_factory.createLiquidVote(democracy.address, 100, vg.merkle_root);
       lvote = await LiquidVote.at(tokentx.logs[0].args.addr);
       assert.ok(lvote);
       c = await lvote.getVoterCount();

@@ -1,0 +1,3 @@
+[submodule "ether-eval/test/merkle-tools"]
+	path = ether-eval/test/merkle-tools
+	url = git@10.10.10.10:development/merkle-tools.git

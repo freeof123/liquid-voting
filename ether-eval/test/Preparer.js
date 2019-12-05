@@ -14,12 +14,41 @@ var VNode = {
 　}
 }
 
+var MerkleTools = {
+  createNew :function(){
+    var MerkleTools = require('./merkle-tools/merkletools.js');
+    var treeOptions = { hashType: 'KECCAK-256' };
+		var merkleTools = new MerkleTools(treeOptions);
+		var merkle_tools = {};
+
+    merkle_tools.add_leaf = function(node){
+      keccak256_enpacked = web3.utils.soliditySha3(node.address, node.stake,
+          node.index, node.endpoint, node.leftbracket, node.rightbracket, node.power);
+      merkleTools.addLeaf(keccak26_enpacked, false);
+    }
+    merkle_tools.make_tree = function(){
+      merkleTools.makeTree(false);
+    }
+    merkle_tools.get_root = function(){
+      return merkleTools.getMerkleRoot();
+    }
+    merkle_tools.get_proof = function(index){
+      proof = merkleTools.getProof(index);
+      return proof.map(item => Object.values(item)[0]);
+    }
+
+		return merkle_tools
+  }
+}
+
 var VGraph = {
   createNew: function(){
     var graph = {};
     graph.nodes = {};
     graph.v_to_parent = {};
     graph.v_to_children = new Map();
+    graph.merkle = MerkleTools.createNew()
+    graph.merkle_root = {}
 
     graph.addNode = function(vnode){
       graph.nodes[vnode.address] = vnode;
@@ -41,9 +70,25 @@ var VGraph = {
         n = obj.n;
         n0 = obj.n0;
       }
+
+      node_obj = [];
+      for (var n in this.nodes){
+        node_obj.push(this.nodes[n])
+      }
+      node_obj.sort(function(n1, n2){
+        return n1.index < n2.index;
+      });
+      for (i = 0; i < node_obj.length; i++){
+        this.merkle.add_leaf(node_obj[i]);
+      }
+      this.merkle.make_tree();
+      this.merkle_root = this.merkle.get_root();
     }
+
     graph.get_voter_info = function(addr){
-      return this.nodes[addr];
+      var ret = this.nodes[addr];
+      ret.proof = this.merkle.get_proof(this.nodes[addr].index);
+      return ret;
     }
 
     graph._find_roots = function(){
@@ -91,4 +136,5 @@ var VGraph = {
   }
 }
 
-module.exports= { VNode, VGraph };
+
+module.exports= { VNode, VGraph, Merkle_Tools};
