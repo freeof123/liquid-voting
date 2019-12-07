@@ -34,11 +34,34 @@ contract LiquidVote is VoteBase{
     merkelRoot = _merkelRoot;
   }
 
-  //function voteChoice(string memory c, uint stake, uint64 index, uint64 endpoint, uint64 leftbracket, uint64 rightbracket, uint power, uint proof_index, bytes32[] memory proof) public{
-    //We ignore the proof for now
-  //}
+  function verify(bytes32[] memory proof, bytes32 root, uint index, bytes32 leaf) internal pure returns (bool) {
+    bytes32 computedHash = leaf;
 
-  function voteChoice(string memory c, uint stake, uint64 index, uint64 endpoint, uint64 leftbracket, uint64 rightbracket, uint power) public{
+    uint256 path = index;
+    for (uint256 i = 0; i < proof.length; i++) {
+      bytes32 proofElement = proof[i];
+
+      if(path & 0x01 == 1){
+          computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
+      }else{
+          computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
+      }
+      path /=2;
+    }
+
+    return computedHash == root;
+  }
+  function voteChoice(string memory c, uint stake, uint64 index,
+                      uint64 endpoint, uint64 leftbracket, uint64 rightbracket,
+                      uint power, uint proof_index, bytes32[] memory proof) public{
+    bytes32 hash = keccak256(abi.encodePacked(msg.sender, stake, index, endpoint, leftbracket, rightbracket, power));
+    bool checked = verify(proof, merkelRoot, proof_index, hash);
+    require(checked, "invalid input data");
+    _voteChoice(c, stake, index, endpoint, leftbracket, rightbracket, power);
+  }
+
+  function _voteChoice(string memory c, uint stake, uint64 index, uint64 endpoint,
+                       uint64 leftbracket, uint64 rightbracket, uint power) internal {
     Node storage node = m_b[index];
     node.exists = true;
     node.voter = msg.sender;
