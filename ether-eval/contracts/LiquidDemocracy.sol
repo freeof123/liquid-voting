@@ -35,19 +35,12 @@ contract LiquidDemocracy{
     emit SetWeight(addr, weight, block.number);
   }
 
-  mapping (address => uint) internal circle_path;
-
-  function check_circle(address _from, address _to) internal returns(bool){
-    uint n = block.number;
-    circle_path[_from] = n;
-    circle_path[_to] = n;
-
+  function check_circle(address _from, address _to) internal view returns(bool){
     address next = v_to_parent[_to];
     while(next != address(0x0)){
-      if(circle_path[next] == n){
+      if(next == _from){
         return true;
       }
-      circle_path[next] = n;
       next = v_to_parent[next];
     }
     return false;

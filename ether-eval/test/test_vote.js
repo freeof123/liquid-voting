@@ -10,7 +10,7 @@ const LiquidVoteFactory = artifacts.require('LiquidVoteFactory');
 contract('TestVote', (accounts) => {
 
 	let democracy = {};
-	let vcount = 100;
+	let vcount = 10;
 	let vg = {};
 	let svote = {};
 	let lvote = {};
@@ -36,12 +36,11 @@ contract('TestVote', (accounts) => {
           }
           await democracy.delegate(accounts[r], {from:accounts[i]});
           vg.addEdge(accounts[i], accounts[r]);
-          console.log(accounts[i], " --> ", accounts[r]);
         }
       }
 
       vg.preorder();
-      console.log(vg);
+      //console.log(vg);
 
       svote_factory = await SimpleVoteFactory.deployed();
       assert.ok(svote_factory);
@@ -56,7 +55,6 @@ contract('TestVote', (accounts) => {
       assert.ok(lvote);
       c = await lvote.getVoterCount();
       c = await democracy.getVoterCount(100);
-      console.log('voter count ', c);
     }),
 
       it('add choice', async() =>{
@@ -90,12 +88,10 @@ contract('TestVote', (accounts) => {
 
           info = vg.get_voter_info(accounts[r]);
 
-          lr = await lvote.voteChoice(option, info.stake, info.index,
-            info.endpoint, info.leftbracket, info.rightbracket, info.power,
-            {from:accounts[r]});
+          lr = await lvote.voteChoice(option, info.stake, info.index, info.endpoint, info.leftbracket,
+            info.rightbracket, info.power, info.proof_index, info.proof, {from:accounts[r]});
           liquid_gas += lr.receipt.gasUsed;
 
-          console.log(accounts[r], ' ---> ', option);
 
           sc1 = await svote.getChoiceVoteNumber("c1");
           sc2 = await svote.getChoiceVoteNumber("c2");
