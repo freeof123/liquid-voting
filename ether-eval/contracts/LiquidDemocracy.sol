@@ -36,13 +36,6 @@ contract LiquidDemocracy{
   }
 
   function check_circle(address _from, address _to) internal view returns(bool){
-    address next = v_to_parent[_to];
-    while(next != address(0x0)){
-      if(next == _from){
-        return true;
-      }
-      next = v_to_parent[next];
-    }
     return false;
   }
 

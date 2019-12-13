@@ -40,6 +40,10 @@ contract VoteBase is LiquidDemocracyTools{
     require(voteResults[hash].exist, "choice not exist");
     return voteResults[hash].total;
   }
+  function isChoiceExist(string memory c) public view returns(bool){
+    bytes32 hash = normalize(c);
+    return voteResults[hash].exist;
+  }
 
   function addVoteNumberForChoice(bytes32 hash, uint n) internal{
     require(voteResults[hash].exist, "addVoteNumberForChoice, choice not exist");
