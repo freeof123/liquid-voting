@@ -1,11 +1,40 @@
 \section{Experiment}
-We compare between our algorithm and traversal algorithm on Ethereum test nest, recording the maximum consumed gas fee, from the following aspect:
+We compare between our algorithm and traversal algorithm by
+recording the maximum consumed gas fee.
 
-\begin{itemize}
-	\item Random graph, random voting order.
-	\item Chain, forward and backward voting order.
-	\item Start graph (no delegation) any voting voter. 
-\end{itemize}
-representing two extreme cases and one normal case. The number of voter ranges from 100 to 1000000.
+\begin{figure}
+  \input{fig/fig_root.tex}
+  \caption{Voting by delegate chain root.}
+  \label{fig:eval:root}
+\end{figure}
 
-TBA.
+\begin{figure}
+  \input{fig/fig_tail.tex}
+  \caption{Voting by delegate chain leaf.}
+  \label{fig:eval:tail}
+\end{figure}
+
+We conduct the evaluation on Ganache, which is a
+personal blockchain for Ethereum development that can be used to deploy contracts, and run tests.
+Our implementation can be found here~\footnote{\url{https://github.com/freeof123/liquid-voting/tree/master/ether-eval/contracts}}.
+As there is no standard implementation for the traversal algorithm, we
+implement it by ourselves.  Specifically, the traversal only happens
+when casting a vote, instead of delegating.
+
+Our comparison is from two aspects, \begin{enumerate*}[1) ]%
+  \item voting by delegate chain \emph{root}, as illustrated in
+  Fig.~\ref{fig:eval:root}, and \item voting by delegate chain
+\emph{leaf}, as shown in Fig.~\ref{fig:eval:tail}. \end{enumerate*}.
+Notice that the gas limit is about 6,700,000 according to Ganache. Our
+evaluation shows that \begin{itemize}
+    \item the traversal algorithm performs better when the delegate chain
+      is short, like smaller than 100;
+    \item our algorithm significantly outperforms the traversal algorithm when
+      the delegate chain is long enough;
+    \item our algorithm can scale up with very limited gas increasing, while
+      the traversal algorithm reaches the gas limit when the delegate chain
+      grows up to 1,000.
+\end{itemize}.
+
+
+

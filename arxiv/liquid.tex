@@ -9,6 +9,8 @@
 %\usepackage{natbib}
 \usepackage{url}
 \usepackage{authblk}
+\usepackage{pgfplots}
+\usepackage[inline, shortlabels]{enumitem}
 
 
 \usepackage{tikz-qtree}
@@ -34,6 +36,24 @@ minimum size=1.6cm]
 \newtheorem{example}{Example}
 \newtheorem{conjecture}{Conjecture}
 \newtheorem{observation}{Observation}
+
+\pgfplotsset{votegas/.style={%
+  ytick={1000000, 2000000, 3000000, 4000000, 5000000, 6000000,
+  7000000, 8000000},
+  ylabel= {Gas Cost},
+  xlabel = {Length of delegate chain},
+  ymin=0,
+  ymax=9000000,
+  xmax = 3200,
+  xmin = 0,
+  scale only axis
+  %width=0.9\textwidth,
+  %height=0.6\textwidth,
+  %legend style={legend pos=north west, font=\normalsize},
+  %xmin=0.01,
+  %every axis/.append style={font=\normalsize}
+}
+}
 \begin{document}
 	\pagestyle{empty}
 
