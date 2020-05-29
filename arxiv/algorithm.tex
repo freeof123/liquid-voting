@@ -169,7 +169,7 @@ For a node (voter), indexes from $node.index+1$ to $node.endpoint$ represents th
 	\eIf {$L=l$ and $R=r$}
 	{
 		\If {$v>lazy_1[k]$} {$lazy_1[k] \leftarrow v$}
-		\If {$L = R$} {$nearestparent[L] = lazy_1[k]$}
+		\If {$L = R$} {$nearestparent[L] \leftarrow lazy_1[k]$}
 		{\color{gray}
 			//Recursion ends when updating interval equals to current node's interval, and then updating the value of the interval}
 	}
@@ -223,7 +223,7 @@ We construct another interval tree with respect to the bracket sequence  and mai
        $lazy_2[k] \leftarrow lazy_2[k]+v$\;
        \If {$L=R$}
        {
-       	   $s[L]=lazy_2[k]$
+       	   $s[L]\leftarrow lazy_2[k]$
        }
 	}
 	{
