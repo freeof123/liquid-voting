@@ -1,31 +1,33 @@
 \section{Experiment}
-We compare between our algorithm and traversal algorithm by
-recording the maximum consumed gas fee.
+We compare between our algorithm and traversal algorithm (implemented by ourselves) by
+recording the maximum consumed gas fee. Since in practice the only requirement is that the  consumed gas fee should be strictly limited by related Ethereum parameter, we focus on extreme cases that produce the maximum consumed gas fee. 
 
-\begin{figure}
-  \input{fig/fig_root.tex}
-  \caption{Voting by delegate chain root.}
+We assume that the delegate graph is a chain, which turns out to be the extreme case of consumed gas fee. We also consider extreme cases where the voter comes from the head/tail of the chain, which is possible to produce the maximum consumed gas fee for both algorithm.
+
+\begin{figure}[h]
+\begin{minipage}[t]{0.5\textwidth}
+ \input{fig_root.tex}
+  \caption{Voting by the head.}
   \label{fig:eval:root}
-\end{figure}
-
-\begin{figure}
-  \input{fig/fig_tail.tex}
-  \caption{Voting by delegate chain leaf.}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+ \input{fig_tail.tex}
+  \caption{Voting by the tail.}
   \label{fig:eval:tail}
+\end{minipage}
 \end{figure}
 
 We conduct the evaluation on Ganache, which is a
 personal blockchain for Ethereum development that can be used to deploy contracts, and run tests.
 Our implementation can be found here~\footnote{\url{https://github.com/freeof123/liquid-voting/tree/master/ether-eval/contracts}}.
-As there is no standard implementation for the traversal algorithm, we
-implement it by ourselves.  Specifically, the traversal only happens
-when casting a vote, instead of delegating.
+%As there is no standard implementation for the traversal algorithm, we
+%implement it by ourselves.  %Specifically, the traversal only happens when casting a vote, instead of delegating.
 
-Our comparison is from two aspects, \begin{enumerate*}[1) ]%
-  \item voting by delegate chain \emph{root}, as illustrated in
-  Fig.~\ref{fig:eval:root}, and \item voting by delegate chain
-\emph{leaf}, as shown in Fig.~\ref{fig:eval:tail}. \end{enumerate*}.
-Notice that the gas limit is about 6,700,000 according to Ganache. Our
+Our comparison is from two aspects. \begin{enumerate*}[1) ]%
+  \item The voter is the \emph{head} of the delegate chain, as illustrated in
+  Fig.~\ref{fig:eval:root}; \item the voter is the \emph{tail} of the delegate chain
+, as shown in Fig.~\ref{fig:eval:tail}. \end{enumerate*}.
+The gas limit is about 6,700,000 according to Ganache. Our
 evaluation shows that \begin{itemize}
     \item the traversal algorithm performs better when the delegate chain
       is short, like smaller than 100;
