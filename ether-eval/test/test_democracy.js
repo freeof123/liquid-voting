@@ -2,17 +2,21 @@ const LiquidDemocracy = artifacts.require("LiquidDemocracy");
 const { BN, constants, expectEvent, expectRevert } = require('openzeppelin-test-helpers');
 const { expect } = require('chai');
 
+const LinkCutTreeFactory = artifacts.require("LinkCutTreeFactory");
 contract('TestDemocracy', (accounts) => {
 
 	let democracy = {};
 
-	context('init', async () => {
+	context('init', () => {
+    it('init', async() =>{
 		democracy = await LiquidDemocracy.deployed();
 		assert.ok(democracy)
-	})
+		lctf = await LinkCutTreeFactory.deployed();
+		await democracy.initLCT(lctf.address);
+	}),
 
 
-	context("delegate", () => {
+	//context("delegate", () => {
     it('assign', async() =>{
       total_fee = 0;
       //for(i = 0; i < accounts.length; ++i){
@@ -24,12 +28,12 @@ contract('TestDemocracy', (accounts) => {
         total_fee += gasUsed;
       }
       console.log('gas used: ', total_fee);
-    }),
+    })
 		//it('delegate circle', async () => {
       //for(i = 0; i < 5; ++i){
 				//await democracy.delegate(accounts[i + 1], {from:accounts[i]});
       //}
       //await expectRevert(democracy.delegate(accounts[0], {from:accounts[5]}), "cannot be circle");
-		//});
+    //});
 	})
 });

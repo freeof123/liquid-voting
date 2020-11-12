@@ -6,6 +6,7 @@ const SimpleVote = artifacts.require('SimpleVote');
 const LiquidVote = artifacts.require('LiquidVote');
 const SimpleVoteFactory = artifacts.require('SimpleVoteFactory');
 const LiquidVoteFactory = artifacts.require('LiquidVoteFactory');
+const LinkCutTreeFactory = artifacts.require("LinkCutTreeFactory");
 
 contract('TestVote', (accounts) => {
 
@@ -15,14 +16,17 @@ contract('TestVote', (accounts) => {
 	let svote = {};
 	let lvote = {};
 
-	context('init', async () => {
+	context('init', () => {
+    it('init', async() =>{
 		democracy = await LiquidDemocracy.deployed();
 		assert.ok(democracy)
+		lctf = await LinkCutTreeFactory.deployed();
+		await democracy.initLCT(lctf.address);
     vg = VGraph.createNew();
-	})
+	}),
 
 
-	context("delegate", () => {
+	//context("delegate", () => {
 
     it('test delegate graph', async() =>{
       for(i = 0; i < vcount; ++i){
